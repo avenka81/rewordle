@@ -158,8 +158,8 @@
     <div class="starter-section">
       <label class="starter-label">My opening word:</label>
       <div class="starter-pills" id="starterPills">
-        <button class="pill selected" data-word="stare" onclick="pickStarter(this)">STARE</button>
-        <button class="pill" data-word="slate" onclick="pickStarter(this)">SLATE</button>
+        <button class="pill" data-word="stare" onclick="pickStarter(this)">STARE</button>
+        <button class="pill selected" data-word="slate" onclick="pickStarter(this)">SLATE</button>
         <button class="pill" data-word="raise" onclick="pickStarter(this)">RAISE</button>
         <button class="pill" data-word="crane" onclick="pickStarter(this)">CRANE</button>
         <button class="pill" data-word="orate" onclick="pickStarter(this)">ORATE</button>
@@ -171,11 +171,11 @@
     <div class="starter-section">
       <label class="starter-label">Strategy:</label>
       <div class="starter-pills" id="strategyPills">
-        <button class="pill strategy-pill selected" data-strategy="classic" onclick="pickStrategy(this)">Classic</button>
+        <button class="pill strategy-pill" data-strategy="classic" onclick="pickStrategy(this)">Classic</button>
         <button class="pill strategy-pill" data-strategy="entropy" onclick="pickStrategy(this)">Entropy</button>
-        <button class="pill strategy-pill" data-strategy="optimized" onclick="pickStrategy(this)">Optimized</button>
+        <button class="pill strategy-pill selected" data-strategy="optimized" onclick="pickStrategy(this)">Optimized</button>
       </div>
-      <p class="strategy-desc" id="strategyDesc">Picks the word with the most common letters in their most common positions.</p>
+      <p class="strategy-desc" id="strategyDesc">Guess 2: avoids confirmed greens to discover new letters. Guess 3+: frequency-weighted entropy — prefers common words over obscure ones (fetches word frequency data from Datamuse API).</p>
     </div>
     <button class="btn btn-primary" id="startBtn" onclick="startGame()">I've thought of a word — Start!</button>
   </div>
@@ -205,7 +205,7 @@
     <button class="btn btn-primary" onclick="resetGame()">Play Again</button>
   </div>
   <div class="thinking-log hidden" id="thinkingLog"></div>
-  <div class="version-footer">v1.0.0</div>
+  <div class="version-footer">v1.2.0</div>
 </div>
 <script>
 // ===== EMBEDDED DATA =====
@@ -221,8 +221,8 @@ const maxGuesses = 6;
 let currentGuess = '';
 let feedbackState = [];
 let gameOver = false;
-let starterWord = 'stare';
-let strategy = 'classic';
+let starterWord = 'slate';
+let strategy = 'optimized';
 // Track known greens from all previous guesses (for optimized mode)
 let confirmedGreens = {}; // {position: letter}
 
@@ -522,6 +522,72 @@ async function loadWordFrequencies() {
   }
 }
 
+// ===== Trap Detection & Elimination Mode =====
+// Detects when candidates differ in only 1-2 positions with many options per position.
+// In this case, guessing from candidates is wasteful (eliminates 1 per guess).
+// Instead, pick a word from the full word list that tests multiple differing letters at once.
+function detectTrap(cands) {
+  if (cands.length <= 2) return null;
+  const varying = [];
+  for (let i = 0; i < 5; i++) {
+    const chars = new Set(cands.map(w => w[i]));
+    if (chars.size > 1) varying.push({ pos: i, chars: [...chars] });
+  }
+  if (varying.length <= 2 && cands.length > 2) {
+    return varying;
+  }
+  return null;
+}
+
+// Score a word by how well it splits the remaining candidates.
+// Uses actual feedback simulation: for each candidate as the hypothetical answer,
+// compute what feedback pattern this guess would produce, and measure how evenly
+// the candidates split into groups. This is essentially entropy, but restricted
+// to the trap context — so we search the full word list, not just candidates.
+//
+// This handles overlapping letters (e.g. P and R in both pos0 and pos2)
+// because feedback simulation naturally distinguishes positional placement.
+function eliminationScore(word, varying, cands) {
+  // Fast path: if only 1 varying position with 2 options, simple check
+  if (varying.length === 1 && cands.length <= 3) {
+    let score = 0;
+    for (const ch of varying[0].chars) {
+      if (word.includes(ch)) score += 1;
+      if (word[varying[0].pos] === ch) score += 0.5;
+    }
+    return score + uniqueLetterBonus(word);
+  }
+
+  // Full simulation: compute how this guess splits the candidates
+  const buckets = new Map();
+  for (const answer of cands) {
+    const pattern = simFeedback(word, answer);
+    buckets.set(pattern, (buckets.get(pattern) || 0) + 1);
+  }
+
+  // Entropy of the split
+  const n = cands.length;
+  let ent = 0;
+  for (const count of buckets.values()) {
+    const p = count / n;
+    if (p > 0) ent -= p * Math.log2(p);
+  }
+  return ent + uniqueLetterBonus(word);
+}
+
+// Lightweight feedback simulation (same as getFeedbackPattern but using a different name
+// to make intent clear — this is for elimination scoring)
+function simFeedback(guess, answer) {
+  const result = [0,0,0,0,0];
+  const used = [false,false,false,false,false];
+  for (let i = 0; i < 5; i++) { if (guess[i] === answer[i]) { result[i] = 2; used[i] = true; } }
+  for (let i = 0; i < 5; i++) {
+    if (result[i] === 2) continue;
+    for (let j = 0; j < 5; j++) { if (!used[j] && guess[i] === answer[j]) { result[i] = 1; used[j] = true; break; } }
+  }
+  return result[0]*81 + result[1]*27 + result[2]*9 + result[3]*3 + result[4];
+}
+
 function findKnownGreens(guess, cands) {
   const greens = [false,false,false,false,false];
   for (let i = 0; i < 5; i++) greens[i] = cands.every(w => w[i] === guess[i]);
@@ -566,6 +632,28 @@ function makeGuess() {
     bestWord = starterWord;
     log(`Opening: "${bestWord.toUpperCase()}"`);
     showGuessOnBoard(bestWord);
+    return;
+  }
+
+  // --- Trap detection (all strategies): if candidates differ in only 1-2 positions ---
+  const trap = (strategy === 'optimized' || strategy === 'entropy') ? detectTrap(candidates) : null;
+  if (trap) {
+    const diffLetters = trap.flatMap(v => v.chars);
+    log(`Trap detected! ${candidates.length} words differ at ${trap.length} position(s): [${diffLetters.join(',')}]`);
+
+    // Search full word list for best elimination word
+    const label = $('remainingLabel');
+    label.innerHTML = `${candidates.length} left <span class="thinking-spinner"></span>`;
+    setTimeout(() => {
+      for (const w of wordList) {
+        // Don't pick a word that's a candidate (that just eliminates 1)
+        const s = eliminationScore(w, trap, candidates);
+        if (s > bestScore) { bestScore = s; bestWord = w; }
+      }
+      label.textContent = `${candidates.length} left`;
+      log(`Elimination guess: "${bestWord.toUpperCase()}" (tests ${bestScore.toFixed(1)} letters)`);
+      showGuessOnBoard(bestWord);
+    }, 20);
     return;
   }
 

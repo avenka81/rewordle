@@ -22,58 +22,33 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     font-family: 'Outfit', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    overflow-x: hidden;
+    background: var(--bg); color: var(--text);
+    min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; overflow-x: hidden;
   }
   body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
+    content: ''; position: fixed; inset: 0;
     background:
       radial-gradient(ellipse at 20% 50%, rgba(233,69,96,0.08) 0%, transparent 50%),
       radial-gradient(ellipse at 80% 20%, rgba(46,204,113,0.06) 0%, transparent 50%),
       radial-gradient(ellipse at 50% 90%, rgba(243,156,18,0.05) 0%, transparent 50%);
-    pointer-events: none;
-    z-index: 0;
+    pointer-events: none; z-index: 0;
   }
-  header {
-    position: relative; z-index: 1;
-    text-align: center; padding: 32px 20px 16px;
-  }
+  header { position: relative; z-index: 1; text-align: center; padding: 24px 20px 8px; }
   header h1 {
-    font-family: 'Space Mono', monospace;
-    font-size: 2rem; font-weight: 700; letter-spacing: -1px;
+    font-family: 'Space Mono', monospace; font-size: 2rem; font-weight: 700;
+    letter-spacing: -1px;
     background: linear-gradient(135deg, var(--accent), var(--present));
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   }
-  header p { color: var(--text-dim); font-size: 0.95rem; margin-top: 6px; font-weight: 300; }
-  .container {
-    position: relative; z-index: 1;
-    width: 100%; max-width: 520px; padding: 0 16px 40px;
-  }
+  header p { color: var(--text-dim); font-size: 0.92rem; margin-top: 4px; font-weight: 300; }
+  .container { position: relative; z-index: 1; width: 100%; max-width: 520px; padding: 0 16px 30px; }
   .setup-panel {
-    background: var(--bg-card); border-radius: 16px;
-    padding: 28px 24px; margin-bottom: 20px;
-    border: 1px solid rgba(255,255,255,0.05); text-align: center;
+    background: var(--bg-card); border-radius: 16px; padding: 22px 20px;
+    margin-bottom: 16px; border: 1px solid rgba(255,255,255,0.05); text-align: center;
   }
-  .setup-panel h2 { font-size: 1.1rem; font-weight: 600; margin-bottom: 12px; }
-  .setup-panel p { color: var(--text-dim); font-size: 0.88rem; line-height: 1.5; margin-bottom: 18px; }
-  .setup-row {
-    display: flex; gap: 10px; margin-bottom: 14px;
-    align-items: center; justify-content: center;
-  }
-  .setup-row input[type="text"] {
-    flex: 1; max-width: 340px; padding: 10px 14px; border-radius: 8px;
-    border: 1px solid rgba(255,255,255,0.1); background: var(--bg);
-    color: var(--text); font-family: 'Space Mono', monospace;
-    font-size: 0.82rem; outline: none; transition: border-color 0.2s;
-  }
-  .setup-row input[type="text"]:focus { border-color: var(--accent); }
+  .setup-panel h2 { font-size: 1.05rem; font-weight: 600; margin-bottom: 10px; }
+  .setup-panel > p { color: var(--text-dim); font-size: 0.84rem; line-height: 1.5; margin-bottom: 14px; }
   .btn {
     display: inline-flex; align-items: center; gap: 6px;
     padding: 12px 28px; border: none; border-radius: 10px;
@@ -81,21 +56,19 @@
     cursor: pointer; transition: all 0.2s; color: #fff;
   }
   .btn-primary { background: var(--accent); }
-  .btn-primary:hover {
-    background: #d63851; transform: translateY(-1px);
-    box-shadow: 0 6px 20px rgba(233,69,96,0.3);
-  }
+  .btn-primary:hover { background: #d63851; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(233,69,96,0.3); }
   .btn-secondary { background: var(--bg-tile); font-size: 0.85rem; padding: 10px 20px; }
   .btn-secondary:hover { background: #1a4a7a; }
+  .btn-sm { padding: 8px 16px; font-size: 0.8rem; border-radius: 8px; }
   .btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
   .status-bar {
-    background: var(--bg-card); border-radius: 12px; padding: 14px 20px;
-    margin-bottom: 16px; display: flex; justify-content: space-between;
-    align-items: center; border: 1px solid rgba(255,255,255,0.05); font-size: 0.88rem;
+    background: var(--bg-card); border-radius: 12px; padding: 10px 16px;
+    margin-bottom: 10px; display: flex; justify-content: space-between;
+    align-items: center; border: 1px solid rgba(255,255,255,0.05); font-size: 0.84rem;
   }
-  .status-bar .remaining { font-family: 'Space Mono', monospace; color: var(--present); font-weight: 700; }
+  .status-bar .remaining { font-family: 'Space Mono', monospace; color: var(--present); font-weight: 700; font-size: 0.78rem; }
   .status-bar .guess-num { color: var(--text-dim); }
-  .board { display: flex; flex-direction: column; align-items: center; gap: var(--gap); margin-bottom: 20px; }
+  .board { display: flex; flex-direction: column; align-items: center; gap: var(--gap); margin-bottom: 10px; }
   .row { display: flex; gap: var(--gap); }
   .tile {
     width: var(--tile-size); height: var(--tile-size);
@@ -112,70 +85,59 @@
   .tile.correct { background: var(--correct); border-color: var(--correct); color: #fff; }
   .tile.present { background: var(--present); border-color: var(--present); color: #fff; }
   .tile.absent { background: var(--absent); border-color: var(--absent); color: rgba(255,255,255,0.7); }
+  .tile.autogreen { position: relative; }
+  .tile.autogreen::after {
+    content: ''; position: absolute; top: 3px; right: 3px;
+    width: 8px; height: 8px; border-radius: 50%;
+    background: rgba(255,255,255,0.55); border: 1px solid rgba(0,0,0,0.15);
+  }
   @keyframes popIn { 0%{transform:scale(0.8);opacity:0.5} 50%{transform:scale(1.08)} 100%{transform:scale(1);opacity:1} }
   @keyframes flipIn { 0%{transform:rotateX(90deg)} 100%{transform:rotateX(0deg)} }
   .tile.flip { animation: flipIn 0.4s ease; }
-  .feedback-help {
-    text-align: center; margin-bottom: 16px;
-    font-size: 0.82rem; color: var(--text-dim); line-height: 1.5;
-  }
-  .feedback-help .legend { display: flex; justify-content: center; gap: 16px; margin-top: 8px; }
-  .feedback-help .legend-item { display: flex; align-items: center; gap: 5px; }
-  .legend-swatch { width: 18px; height: 18px; border-radius: 4px; display: inline-block; }
-  .actions { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+  .actions { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+  .feedback-help { text-align: center; margin-bottom: 6px; font-size: 0.75rem; color: var(--text-dim); line-height: 1.4; }
+  .feedback-help .legend { display: flex; justify-content: center; gap: 12px; margin-top: 3px; }
+  .feedback-help .legend-item { display: flex; align-items: center; gap: 4px; font-size: 0.7rem; }
+  .legend-swatch { width: 13px; height: 13px; border-radius: 3px; display: inline-block; }
+  .override-hint { font-size: 0.68rem; color: var(--text-dim); opacity: 0.7; margin-top: 3px; font-style: italic; }
   .result-panel {
-    background: var(--bg-card); border-radius: 16px; padding: 32px 24px;
+    background: var(--bg-card); border-radius: 16px; padding: 28px 20px;
     text-align: center; border: 1px solid rgba(255,255,255,0.05); margin-top: 8px;
   }
-  .result-panel h2 { font-size: 1.4rem; margin-bottom: 8px; }
-  .result-panel .emoji { font-size: 3rem; margin-bottom: 12px; }
-  .result-panel p { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 18px; }
+  .result-panel h2 { font-size: 1.3rem; margin-bottom: 6px; }
+  .result-panel .emoji { font-size: 2.8rem; margin-bottom: 10px; }
+  .result-panel p { color: var(--text-dim); font-size: 0.88rem; margin-bottom: 14px; }
   .thinking-log {
-    margin-top: 12px; background: rgba(0,0,0,0.2); border-radius: 10px;
-    padding: 14px 16px; font-family: 'Space Mono', monospace;
-    font-size: 0.75rem; color: var(--text-dim); max-height: 120px;
-    overflow-y: auto; line-height: 1.6; border: 1px solid rgba(255,255,255,0.04);
+    margin-top: 6px; background: rgba(0,0,0,0.2); border-radius: 10px;
+    padding: 10px 14px; font-family: 'Space Mono', monospace;
+    font-size: 0.68rem; color: var(--text-dim); max-height: 90px;
+    overflow-y: auto; line-height: 1.5; border: 1px solid rgba(255,255,255,0.04);
   }
-  .starter-section { margin-bottom: 18px; }
-  .starter-label {
-    display: block; font-size: 0.85rem; color: var(--text-dim);
-    margin-bottom: 10px; font-weight: 400;
-  }
-  .starter-pills {
-    display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
-  }
+  .starter-section { margin-bottom: 12px; }
+  .starter-label { display: block; font-size: 0.82rem; color: var(--text-dim); margin-bottom: 7px; font-weight: 400; }
+  .starter-pills { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
   .pill {
-    font-family: 'Space Mono', monospace; font-size: 0.8rem; font-weight: 700;
-    padding: 8px 14px; border-radius: 8px; border: 2px solid rgba(255,255,255,0.1);
+    font-family: 'Space Mono', monospace; font-size: 0.73rem; font-weight: 700;
+    padding: 7px 11px; border-radius: 8px; border: 2px solid rgba(255,255,255,0.1);
     background: var(--bg); color: var(--text-dim); cursor: pointer;
     transition: all 0.2s; letter-spacing: 1px;
   }
   .pill:hover { border-color: var(--accent); color: var(--text); transform: translateY(-1px); }
-  .pill.selected {
-    background: var(--accent); border-color: var(--accent);
-    color: #fff; box-shadow: 0 3px 12px rgba(233,69,96,0.3);
-  }
-  .strategy-desc {
-    font-size: 0.75rem; color: var(--text-dim); margin-top: 8px;
-    font-style: italic; line-height: 1.4;
-  }
-  .tile.locked {
-    cursor: default; opacity: 0.95;
-  }
-  .tile.locked:hover { transform: none; }
+  .pill.selected { background: var(--accent); border-color: var(--accent); color: #fff; box-shadow: 0 3px 12px rgba(233,69,96,0.3); }
+  .strategy-desc { font-size: 0.7rem; color: var(--text-dim); margin-top: 5px; font-style: italic; line-height: 1.3; }
   .thinking-spinner {
-    display: inline-block; width: 14px; height: 14px;
-    border: 2px solid rgba(255,255,255,0.2);
-    border-top-color: var(--present);
-    border-radius: 50%; animation: spin 0.6s linear infinite;
-    margin-left: 6px; vertical-align: middle;
+    display: inline-block; width: 12px; height: 12px;
+    border: 2px solid rgba(255,255,255,0.2); border-top-color: var(--present);
+    border-radius: 50%; animation: spin 0.6s linear infinite; margin-left: 4px; vertical-align: middle;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
   .hidden { display: none !important; }
-  @media (max-width: 400px) {
+  @media (max-width: 440px) {
     :root { --tile-size: 52px; --gap: 6px; }
     .tile { font-size: 1.3rem; }
-    header h1 { font-size: 1.5rem; }
+    header h1 { font-size: 1.6rem; }
+    header { padding: 16px 14px 6px; }
+    .container { padding: 0 10px 16px; }
   }
 </style>
 </head>
@@ -187,8 +149,7 @@
 <div class="container">
   <div class="setup-panel" id="setupPanel">
     <h2>🎯 Ready?</h2>
-    <p>Think of any 5-letter word from the Wordle dictionary.<br>I have 2,314 words and letter frequency data built in.</p>
-
+    <p>Think of any 5-letter word. I have 2,314 Wordle words built in — and I'll search online if your word isn't in my list.</p>
     <div class="starter-section">
       <label class="starter-label">My opening word:</label>
       <div class="starter-pills" id="starterPills">
@@ -202,61 +163,47 @@
         <button class="pill" data-word="radio" onclick="pickStarter(this)">RADIO</button>
       </div>
     </div>
-
     <div class="starter-section">
       <label class="starter-label">Strategy:</label>
       <div class="starter-pills" id="strategyPills">
-        <button class="pill strategy-pill selected" data-strategy="classic" onclick="pickStrategy(this)">
-          Classic
-        </button>
-        <button class="pill strategy-pill" data-strategy="entropy" onclick="pickStrategy(this)">
-          Entropy
-        </button>
+        <button class="pill strategy-pill selected" data-strategy="classic" onclick="pickStrategy(this)">Classic</button>
+        <button class="pill strategy-pill" data-strategy="entropy" onclick="pickStrategy(this)">Entropy</button>
+        <button class="pill strategy-pill" data-strategy="optimized" onclick="pickStrategy(this)">Optimized</button>
       </div>
       <p class="strategy-desc" id="strategyDesc">Picks the word with the most common letters in their most common positions.</p>
     </div>
-
-    <p style="font-size:0.78rem; color: var(--text-dim); margin-bottom:14px;">
-      Optionally load different word/frequency CSVs:
-    </p>
-    <div class="setup-row">
-      <input type="text" id="dictUrl" placeholder="Custom word list CSV URL (optional)">
-    </div>
-    <div class="setup-row">
-      <input type="text" id="freqUrl" placeholder="Custom frequency CSV URL (optional)">
-    </div>
     <button class="btn btn-primary" id="startBtn" onclick="startGame()">I've thought of a word — Start!</button>
   </div>
+
   <div class="status-bar hidden" id="statusBar">
     <span class="guess-num" id="guessLabel">Guess 1 / 6</span>
-    <span class="remaining" id="remainingLabel">Loading...</span>
+    <span class="remaining" id="remainingLabel"></span>
   </div>
   <div class="board hidden" id="board"></div>
-  <div class="feedback-help hidden" id="feedbackHelp">
-    Click each letter tile to set its color, then confirm.
-    <div class="legend">
-      <div class="legend-item"><span class="legend-swatch" style="background:var(--absent)"></span> Not in word</div>
-      <div class="legend-item"><span class="legend-swatch" style="background:var(--present)"></span> Wrong spot</div>
-      <div class="legend-item"><span class="legend-swatch" style="background:var(--correct)"></span> Correct</div>
-    </div>
-  </div>
   <div class="actions hidden" id="actions">
-    <button class="btn btn-primary" id="confirmBtn" onclick="confirmFeedback()">Confirm Feedback</button>
-    <button class="btn btn-secondary" onclick="resetGame()">New Game</button>
+    <button class="btn btn-primary btn-sm" id="confirmBtn" onclick="confirmFeedback()">Confirm</button>
+    <button class="btn btn-secondary btn-sm" onclick="resetGame()">New Game</button>
   </div>
-  <div class="thinking-log hidden" id="thinkingLog"></div>
+  <div class="feedback-help hidden" id="feedbackHelp">
+    Click tiles to cycle color, then confirm.
+    <div class="legend">
+      <div class="legend-item"><span class="legend-swatch" style="background:var(--absent)"></span> Gray</div>
+      <div class="legend-item"><span class="legend-swatch" style="background:var(--present)"></span> Yellow</div>
+      <div class="legend-item"><span class="legend-swatch" style="background:var(--correct)"></span> Green</div>
+    </div>
+    <div class="override-hint">● dot = auto-green — click it to override if wrong</div>
+  </div>
   <div class="result-panel hidden" id="resultPanel">
     <div class="emoji" id="resultEmoji"></div>
     <h2 id="resultTitle"></h2>
     <p id="resultMsg"></p>
     <button class="btn btn-primary" onclick="resetGame()">Play Again</button>
   </div>
+  <div class="thinking-log hidden" id="thinkingLog"></div>
 </div>
 <script>
 // ===== EMBEDDED DATA =====
-const EMBEDDED_WORDS = ["aback","abase","abate","abbey","abbot","abhor","abide","abled","abode","abort","about","above","abuse","abyss","acorn","acrid","actor","acute","adage","adapt","adept","admin","admit","adobe","adopt","adore","adorn","adult","affix","afire","afoot","afoul","after","again","agape","agate","agent","agile","aging","aglow","agony","agora","agree","ahead","aider","aisle","alarm","album","alert","algae","alibi","alien","align","alike","alive","allay","alley","allot","allow","alloy","aloft","alone","along","aloof","aloud","alpha","altar","alter","amass","amaze","amber","amble","amend","amiss","amity","among","ample","amply","amuse","angel","anger","angle","angry","angst","anime","ankle","annex","annoy","annul","anode","antic","anvil","aorta","apart","aphid","aping","apnea","apple","apply","apron","aptly","arbor","ardor","arena","argue","arise","armor","aroma","arose","array","arrow","arson","artsy","ascot","ashen","aside","askew","assay","asset","atoll","atone","attic","audio","audit","augur","aunty","avail","avert","avian","avoid","await","awake","award","aware","awash","awful","awoke","axial","axiom","axion","azure","bacon","badge","badly","bagel","baggy","baker","baler","balmy","banal","banjo","barge","baron","basal","basic","basil","basin","basis","baste","batch","bathe","baton","batty","bawdy","bayou","beach","beady","beard","beast","beech","beefy","befit","began","begat","beget","begin","begun","being","belch","belie","belle","belly","below","bench","beret","berry","berth","beset","betel","bevel","bezel","bible","bicep","biddy","bigot","bilge","billy","binge","bingo","biome","birch","birth","bison","bitty","black","blade","blame","bland","blank","blare","blast","blaze","bleak","bleat","bleed","bleep","blend","bless","blimp","blind","blink","bliss","blitz","bloat","block","bloke","blond","blood","bloom","blown","bluer","bluff","blunt","blurb","blurt","blush","board","boast","bobby","boney","bongo","bonus","booby","boost","booth","booty","booze","boozy","borax","borne","bosom","bossy","botch","bough","boule","bound","bowel","boxer","brace","braid","brain","brake","brand","brash","brass","brave","bravo","brawl","brawn","bread","break","breed","briar","bribe","brick","bride","brief","brine","bring","brink","briny","brisk","broad","broil","broke","brood","brook","broom","broth","brown","brunt","brush","brute","buddy","budge","buggy","bugle","build","built","bulge","bulky","bully","bunch","bunny","burly","burnt","burst","bused","bushy","butch","butte","buxom","buyer","bylaw","cabal","cabby","cabin","cable","cacao","cache","cacti","caddy","cadet","cagey","cairn","camel","cameo","canal","candy","canny","canoe","canon","caper","caput","carat","cargo","carol","carry","carve","caste","catch","cater","catty","caulk","cause","cavil","cease","cedar","cello","chafe","chaff","chain","chair","chalk","champ","chant","chaos","chard","charm","chart","chase","chasm","cheap","cheat","check","cheek","cheer","chess","chest","chick","chide","chief","child","chili","chill","chime","china","chirp","chock","choir","choke","chord","chore","chose","chuck","chump","chunk","churn","chute","cider","cigar","cinch","circa","civic","civil","clack","claim","clamp","clang","clank","clash","clasp","class","clean","clear","cleat","cleft","clerk","click","cliff","climb","cling","clink","cloak","clock","clone","close","cloth","cloud","clout","clove","clown","cluck","clued","clump","clung","coach","coast","cobra","cocoa","colon","color","comet","comfy","comic","comma","conch","condo","conic","copse","coral","corer","corny","couch","cough","could","count","coupe","court","coven","cover","covet","covey","cower","coyly","crack","craft","cramp","crane","crank","crash","crass","crate","crave","crawl","craze","crazy","creak","cream","credo","creed","creek","creep","creme","crepe","crept","cress","crest","crick","cried","crier","crime","crimp","crisp","croak","crock","crone","crony","crook","cross","croup","crowd","crown","crude","cruel","crumb","crump","crush","crust","crypt","cubic","cumin","curio","curly","curry","curse","curve","curvy","cutie","cyber","cycle","cynic","daddy","daily","dairy","daisy","dally","dance","dandy","datum","daunt","dealt","death","debar","debit","debug","debut","decal","decay","decor","decoy","decry","defer","deign","deity","delay","delta","delve","demon","demur","denim","dense","depot","depth","derby","deter","detox","deuce","devil","diary","dicey","digit","dilly","dimly","diner","dingo","dingy","diode","dirge","dirty","disco","ditch","ditto","ditty","diver","dizzy","dodge","dodgy","dogma","doing","dolly","donor","donut","dopey","doubt","dough","dowdy","dowel","downy","dowry","dozen","draft","drain","drake","drama","drank","drape","drawl","drawn","dread","dream","dress","dried","drier","drift","drill","drink","drive","droit","droll","drone","drool","droop","dross","drove","drown","druid","drunk","dryer","dryly","duchy","dully","dummy","dumpy","dunce","dusky","dusty","dutch","duvet","dwarf","dwell","dwelt","dying","eager","eagle","early","earth","easel","eaten","eater","ebony","eclat","edict","edify","eerie","egret","eight","eject","eking","elate","elbow","elder","elect","elegy","elfin","elide","elite","elope","elude","email","embed","ember","emcee","empty","enact","endow","enema","enemy","enjoy","ennui","ensue","enter","entry","envoy","epoch","epoxy","equal","equip","erase","erect","erode","error","erupt","essay","ester","ether","ethic","ethos","etude","evade","event","every","evict","evoke","exact","exalt","excel","exert","exile","exist","expel","extol","extra","exult","eying","fable","facet","faint","fairy","faith","FALSE","fancy","fanny","farce","fatal","fatty","fault","fauna","favor","feast","fecal","feign","fella","felon","femme","femur","fence","feral","ferry","fetal","fetch","fetid","fetus","fever","fewer","fiber","fibre","ficus","field","fiend","fiery","fifth","fifty","fight","filer","filet","filly","filmy","filth","final","finch","finer","first","fishy","fixer","fizzy","fjord","flack","flail","flair","flake","flaky","flame","flank","flare","flash","flask","fleck","fleet","flesh","flick","flier","fling","flint","flirt","float","flock","flood","floor","flora","floss","flour","flout","flown","fluff","fluid","fluke","flume","flung","flunk","flush","flute","flyer","foamy","focal","focus","foggy","foist","folio","folly","foray","force","forge","forgo","forte","forth","forty","forum","found","foyer","frail","frame","frank","fraud","freak","freed","freer","fresh","friar","fried","frill","frisk","fritz","frock","frond","front","frost","froth","frown","froze","fruit","fudge","fugue","fully","fungi","funky","funny","furor","furry","fussy","fuzzy","gaffe","gaily","gamer","gamma","gamut","gassy","gaudy","gauge","gaunt","gauze","gavel","gawky","gayer","gayly","gazer","gecko","geeky","geese","genie","genre","ghost","ghoul","giant","giddy","gipsy","girly","girth","given","giver","glade","gland","glare","glass","glaze","gleam","glean","glide","glint","gloat","globe","gloom","glory","gloss","glove","glyph","gnash","gnome","godly","going","golem","golly","gonad","goner","goody","gooey","goofy","goose","gorge","gouge","gourd","grace","grade","graft","grail","grain","grand","grant","grape","graph","grasp","grass","grate","grave","gravy","graze","great","greed","green","greet","grief","grill","grime","grimy","grind","gripe","groan","groin","groom","grope","gross","group","grout","grove","growl","grown","gruel","gruff","grunt","guard","guava","guess","guest","guide","guild","guile","guilt","guise","gulch","gully","gumbo","gummy","guppy","gusto","gusty","gypsy","habit","hairy","halve","handy","happy","hardy","harem","harpy","harry","harsh","haste","hasty","hatch","hater","haunt","haute","haven","havoc","hazel","heady","heard","heart","heath","heave","heavy","hedge","hefty","heist","helix","hello","hence","heron","hilly","hinge","hippo","hippy","hitch","hoard","hobby","hoist","holly","homer","honey","honor","horde","horny","horse","hotel","hotly","hound","house","hovel","hover","howdy","human","humid","humor","humph","humus","hunch","hunky","hurry","husky","hussy","hutch","hydro","hyena","hymen","hyper","icily","icing","ideal","idiom","idiot","idler","idyll","igloo","iliac","image","imbue","impel","imply","inane","inbox","incur","index","inept","inert","infer","ingot","inlay","inlet","inner","input","inter","intro","ionic","irate","irony","islet","issue","itchy","ivory","jaunt","jazzy","jelly","jerky","jetty","jewel","jiffy","joint","joist","joker","jolly","joust","judge","juice","juicy","jumbo","jumpy","junta","junto","juror","kappa","karma","kayak","kebab","khaki","kinky","kiosk","kitty","knack","knave","knead","kneed","kneel","knelt","knife","knock","knoll","known","koala","krill","label","labor","laden","ladle","lager","lance","lanky","lapel","lapse","large","larva","lasso","latch","later","lathe","latte","laugh","layer","leach","leafy","leaky","leant","leapt","learn","lease","leash","least","leave","ledge","leech","leery","lefty","legal","leggy","lemon","lemur","leper","level","lever","libel","liege","light","liken","lilac","limbo","limit","linen","liner","lingo","lipid","lithe","liver","livid","llama","loamy","loath","lobby","local","locus","lodge","lofty","logic","login","loopy","loose","lorry","loser","louse","lousy","lover","lower","lowly","loyal","lucid","lucky","lumen","lumpy","lunar","lunch","lunge","lupus","lurch","lurid","lusty","lying","lymph","lynch","lyric","macaw","macho","macro","madam","madly","mafia","magic","magma","maize","major","maker","mambo","mamma","mammy","manga","mange","mango","mangy","mania","manic","manly","manor","maple","march","marry","marsh","mason","masse","match","matey","mauve","maxim","maybe","mayor","mealy","meant","meaty","mecca","medal","media","medic","melee","melon","mercy","merge","merit","merry","metal","meter","metro","micro","midge","midst","might","milky","mimic","mince","miner","minim","minor","minty","minus","mirth","miser","missy","mocha","modal","model","modem","mogul","moist","molar","moldy","money","month","moody","moose","moral","moron","morph","mossy","motel","motif","motor","motto","moult","mound","mount","mourn","mouse","mouth","mover","movie","mower","mucky","mucus","muddy","mulch","mummy","munch","mural","murky","mushy","music","musky","musty","myrrh","nadir","naive","nanny","nasal","nasty","natal","naval","navel","needy","neigh","nerdy","nerve","never","newer","newly","nicer","niche","niece","night","ninja","ninny","ninth","noble","nobly","noise","noisy","nomad","noose","north","nosey","notch","novel","nudge","nurse","nutty","nylon","nymph","oaken","obese","occur","ocean","octal","octet","odder","oddly","offal","offer","often","olden","older","olive","ombre","omega","onion","onset","opera","opine","opium","optic","orbit","order","organ","other","otter","ought","ounce","outdo","outer","outgo","ovary","ovate","overt","ovine","ovoid","owing","owner","oxide","ozone","paddy","pagan","paint","paler","palsy","panel","panic","pansy","papal","paper","parer","parka","parry","parse","party","pasta","paste","pasty","patch","patio","patsy","patty","pause","payee","payer","peace","peach","pearl","pecan","pedal","penal","pence","penne","penny","perch","peril","perky","pesky","pesto","petal","petty","phase","phone","phony","photo","piano","picky","piece","piety","piggy","pilot","pinch","piney","pinky","pinto","piper","pique","pitch","pithy","pivot","pixel","pixie","pizza","place","plaid","plain","plait","plane","plank","plant","plate","plaza","plead","pleat","plied","plier","pluck","plumb","plume","plump","plunk","plush","poesy","point","poise","poker","polar","polka","polyp","pooch","poppy","porch","poser","posit","posse","pouch","pound","pouty","power","prank","prawn","preen","press","price","prick","pride","pried","prime","primo","print","prior","prism","privy","prize","probe","prone","prong","proof","prose","proud","prove","prowl","proxy","prude","prune","psalm","pubic","pudgy","puffy","pulpy","pulse","punch","pupal","pupil","puppy","puree","purer","purge","purse","pushy","putty","pygmy","quack","quail","quake","qualm","quark","quart","quash","quasi","queen","queer","quell","query","quest","queue","quick","quiet","quill","quilt","quirk","quite","quota","quote","quoth","rabbi","rabid","racer","radar","radii","radio","rainy","raise","rajah","rally","ralph","ramen","ranch","randy","range","rapid","rarer","raspy","ratio","ratty","raven","rayon","razor","reach","react","ready","realm","rearm","rebar","rebel","rebus","rebut","recap","recur","recut","reedy","refer","refit","regal","rehab","reign","relax","relay","relic","remit","renal","renew","repay","repel","reply","rerun","reset","resin","retch","retro","retry","reuse","revel","revue","rhino","rhyme","rider","ridge","rifle","right","rigid","rigor","rinse","ripen","riper","risen","riser","risky","rival","river","rivet","roach","roast","robin","robot","rocky","rodeo","roger","rogue","roomy","roost","rotor","rouge","rough","round","rouse","route","rover","rowdy","rower","royal","ruddy","ruder","rugby","ruler","rumba","rumor","rupee","rural","rusty","sadly","safer","saint","salad","sally","salon","salsa","salty","salve","salvo","sandy","saner","sappy","sassy","satin","satyr","sauce","saucy","sauna","saute","savor","savoy","savvy","scald","scale","scalp","scaly","scamp","scant","scare","scarf","scary","scene","scent","scion","scoff","scold","scone","scoop","scope","score","scorn","scour","scout","scowl","scram","scrap","scree","screw","scrub","scrum","scuba","sedan","seedy","segue","seize","semen","sense","sepia","serif","serum","serve","setup","seven","sever","sewer","shack","shade","shady","shaft","shake","shaky","shale","shall","shalt","shame","shank","shape","shard","share","shark","sharp","shave","shawl","shear","sheen","sheep","sheer","sheet","sheik","shelf","shell","shied","shift","shine","shiny","shire","shirk","shirt","shoal","shock","shone","shook","shoot","shore","shorn","short","shout","shove","shown","showy","shrew","shrub","shrug","shuck","shunt","shush","shyly","siege","sieve","sight","sigma","silky","silly","since","sinew","singe","siren","sissy","sixth","sixty","skate","skier","skiff","skill","skimp","skirt","skulk","skull","skunk","slack","slain","slang","slant","slash","slate","slave","sleek","sleep","sleet","slept","slice","slick","slide","slime","slimy","sling","slink","sloop","slope","slosh","sloth","slump","slung","slunk","slurp","slush","slyly","smack","small","smart","smash","smear","smell","smelt","smile","smirk","smite","smith","smock","smoke","smoky","smote","snack","snail","snake","snaky","snare","snarl","sneak","sneer","snide","sniff","snipe","snoop","snore","snort","snout","snowy","snuck","snuff","soapy","sober","soggy","solar","solid","solve","sonar","sonic","sooth","sooty","sorry","sound","south","sower","space","spade","spank","spare","spark","spasm","spawn","speak","spear","speck","speed","spell","spelt","spend","spent","sperm","spice","spicy","spied","spiel","spike","spiky","spill","spilt","spine","spiny","spire","spite","splat","split","spoil","spoke","spoof","spook","spool","spoon","spore","sport","spout","spray","spree","sprig","spunk","spurn","spurt","squad","squat","squib","stack","staff","stage","staid","stain","stair","stake","stale","stalk","stall","stamp","stand","stank","stare","stark","start","stash","state","stave","stead","steak","steal","steam","steed","steel","steep","steer","stein","stern","stick","stiff","still","stilt","sting","stink","stint","stock","stoic","stoke","stole","stomp","stone","stony","stood","stool","stoop","store","stork","storm","story","stout","stove","strap","straw","stray","strip","strut","stuck","study","stuff","stump","stung","stunk","stunt","style","suave","sugar","suing","suite","sulky","sully","sumac","sunny","super","surer","surge","surly","sushi","swami","swamp","swarm","swash","swath","swear","sweat","sweep","sweet","swell","swept","swift","swill","swine","swing","swirl","swish","swoon","swoop","sword","swore","sworn","swung","synod","syrup","tabby","table","taboo","tacit","tacky","taffy","taint","taken","taker","tally","talon","tamer","tango","tangy","taper","tapir","tardy","tarot","taste","tasty","tatty","taunt","tawny","teach","teary","tease","teddy","teeth","tempo","tenet","tenor","tense","tenth","tepee","tepid","terra","terse","testy","thank","theft","their","theme","there","these","theta","thick","thief","thigh","thing","think","third","thong","thorn","those","three","threw","throb","throw","thrum","thumb","thump","thyme","tiara","tibia","tidal","tiger","tight","tilde","timer","timid","tipsy","titan","tithe","title","toast","today","toddy","token","tonal","tonga","tonic","tooth","topaz","topic","torch","torso","torus","total","totem","touch","tough","towel","tower","toxic","toxin","trace","track","tract","trade","trail","train","trait","tramp","trash","trawl","tread","treat","trend","triad","trial","tribe","trice","trick","tried","tripe","trite","troll","troop","trope","trout","trove","truce","truck","truer","truly","trump","trunk","truss","trust","truth","tryst","tubal","tuber","tulip","tulle","tumor","tunic","turbo","tutor","twang","tweak","tweed","tweet","twice","twine","twirl","twist","twixt","tying","udder","ulcer","ultra","umbra","uncle","uncut","under","undid","undue","unfed","unfit","unify","union","unite","unity","unlit","unmet","unset","untie","until","unwed","unzip","upper","upset","urban","urine","usage","usher","using","usual","usurp","utile","utter","vague","valet","valid","valor","value","valve","vapid","vapor","vault","vaunt","vegan","venom","venue","verge","verse","verso","verve","vicar","video","vigil","vigor","villa","vinyl","viola","viper","viral","virus","visit","visor","vista","vital","vivid","vixen","vocal","vodka","vogue","voice","voila","vomit","voter","vouch","vowel","vying","wacky","wafer","wager","wagon","waist","waive","waltz","warty","waste","watch","water","waver","waxen","weary","weave","wedge","weedy","weigh","weird","welch","welsh","wench","whack","whale","wharf","wheat","wheel","whelp","where","which","whiff","while","whine","whiny","whirl","whisk","white","whole","whoop","whose","widen","wider","widow","width","wield","wight","willy","wimpy","wince","winch","windy","wiser","wispy","witch","witty","woken","woman","women","woody","wooer","wooly","woozy","wordy","world","worry","worse","worst","worth","would","wound","woven","wrack","wrath","wreak","wreck","wrest","wring","wrist","write","wrong","wrote","wrung","wryly","yacht","yearn","yeast","yield","young","youth","zebra","zesty","zonal"
-];
-
+const EMBEDDED_WORDS = ["aback","abase","abate","abbey","abbot","abhor","abide","abled","abode","abort","about","above","abuse","abyss","acorn","acrid","actor","acute","adage","adapt","adept","admin","admit","adobe","adopt","adore","adorn","adult","affix","afire","afoot","afoul","after","again","agape","agate","agent","agile","aging","aglow","agony","agora","agree","ahead","aider","aisle","alarm","album","alert","algae","alibi","alien","align","alike","alive","allay","alley","allot","allow","alloy","aloft","alone","along","aloof","aloud","alpha","altar","alter","amass","amaze","amber","amble","amend","amiss","amity","among","ample","amply","amuse","angel","anger","angle","angry","angst","anime","ankle","annex","annoy","annul","anode","antic","anvil","aorta","apart","aphid","aping","apnea","apple","apply","apron","aptly","arbor","ardor","arena","argue","arise","armor","aroma","arose","array","arrow","arson","artsy","ascot","ashen","aside","askew","assay","asset","atoll","atone","attic","audio","audit","augur","aunty","avail","avert","avian","avoid","await","awake","award","aware","awash","awful","awoke","axial","axiom","axion","azure","bacon","badge","badly","bagel","baggy","baker","baler","balmy","banal","banjo","barge","baron","basal","basic","basil","basin","basis","baste","batch","bathe","baton","batty","bawdy","bayou","beach","beady","beard","beast","beech","beefy","befit","began","begat","beget","begin","begun","being","belch","belie","belle","belly","below","bench","beret","berry","berth","beset","betel","bevel","bezel","bible","bicep","biddy","bigot","bilge","billy","binge","bingo","biome","birch","birth","bison","bitty","black","blade","blame","bland","blank","blare","blast","blaze","bleak","bleat","bleed","bleep","blend","bless","blimp","blind","blink","bliss","blitz","bloat","block","bloke","blond","blood","bloom","blown","bluer","bluff","blunt","blurb","blurt","blush","board","boast","bobby","boney","bongo","bonus","booby","boost","booth","booty","booze","boozy","borax","borne","bosom","bossy","botch","bough","boule","bound","bowel","boxer","brace","braid","brain","brake","brand","brash","brass","brave","bravo","brawl","brawn","bread","break","breed","briar","bribe","brick","bride","brief","brine","bring","brink","briny","brisk","broad","broil","broke","brood","brook","broom","broth","brown","brunt","brush","brute","buddy","budge","buggy","bugle","build","built","bulge","bulky","bully","bunch","bunny","burly","burnt","burst","bused","bushy","butch","butte","buxom","buyer","bylaw","cabal","cabby","cabin","cable","cacao","cache","cacti","caddy","cadet","cagey","cairn","camel","cameo","canal","candy","canny","canoe","canon","caper","caput","carat","cargo","carol","carry","carve","caste","catch","cater","catty","caulk","cause","cavil","cease","cedar","cello","chafe","chaff","chain","chair","chalk","champ","chant","chaos","chard","charm","chart","chase","chasm","cheap","cheat","check","cheek","cheer","chess","chest","chick","chide","chief","child","chili","chill","chime","china","chirp","chock","choir","choke","chord","chore","chose","chuck","chump","chunk","churn","chute","cider","cigar","cinch","circa","civic","civil","clack","claim","clamp","clang","clank","clash","clasp","class","clean","clear","cleat","cleft","clerk","click","cliff","climb","cling","clink","cloak","clock","clone","close","cloth","cloud","clout","clove","clown","cluck","clued","clump","clung","coach","coast","cobra","cocoa","colon","color","comet","comfy","comic","comma","conch","condo","conic","copse","coral","corer","corny","couch","cough","could","count","coupe","court","coven","cover","covet","covey","cower","coyly","crack","craft","cramp","crane","crank","crash","crass","crate","crave","crawl","craze","crazy","creak","cream","credo","creed","creek","creep","creme","crepe","crept","cress","crest","crick","cried","crier","crime","crimp","crisp","croak","crock","crone","crony","crook","cross","croup","crowd","crown","crude","cruel","crumb","crump","crush","crust","crypt","cubic","cumin","curio","curly","curry","curse","curve","curvy","cutie","cyber","cycle","cynic","daddy","daily","dairy","daisy","dally","dance","dandy","datum","daunt","dealt","death","debar","debit","debug","debut","decal","decay","decor","decoy","decry","defer","deign","deity","delay","delta","delve","demon","demur","denim","dense","depot","depth","derby","deter","detox","deuce","devil","diary","dicey","digit","dilly","dimly","diner","dingo","dingy","diode","dirge","dirty","disco","ditch","ditto","ditty","diver","dizzy","dodge","dodgy","dogma","doing","dolly","donor","donut","dopey","doubt","dough","dowdy","dowel","downy","dowry","dozen","draft","drain","drake","drama","drank","drape","drawl","drawn","dread","dream","dress","dried","drier","drift","drill","drink","drive","droit","droll","drone","drool","droop","dross","drove","drown","druid","drunk","dryer","dryly","duchy","dully","dummy","dumpy","dunce","dusky","dusty","dutch","duvet","dwarf","dwell","dwelt","dying","eager","eagle","early","earth","easel","eaten","eater","ebony","eclat","edict","edify","eerie","egret","eight","eject","eking","elate","elbow","elder","elect","elegy","elfin","elide","elite","elope","elude","email","embed","ember","emcee","empty","enact","endow","enema","enemy","enjoy","ennui","ensue","enter","entry","envoy","epoch","epoxy","equal","equip","erase","erect","erode","error","erupt","essay","ester","ether","ethic","ethos","etude","evade","event","every","evict","evoke","exact","exalt","excel","exert","exile","exist","expel","extol","extra","exult","eying","fable","facet","faint","fairy","faith","FALSE","fancy","fanny","farce","fatal","fatty","fault","fauna","favor","feast","fecal","feign","fella","felon","femme","femur","fence","feral","ferry","fetal","fetch","fetid","fetus","fever","fewer","fiber","fibre","ficus","field","fiend","fiery","fifth","fifty","fight","filer","filet","filly","filmy","filth","final","finch","finer","first","fishy","fixer","fizzy","fjord","flack","flail","flair","flake","flaky","flame","flank","flare","flash","flask","fleck","fleet","flesh","flick","flier","fling","flint","flirt","float","flock","flood","floor","flora","floss","flour","flout","flown","fluff","fluid","fluke","flume","flung","flunk","flush","flute","flyer","foamy","focal","focus","foggy","foist","folio","folly","foray","force","forge","forgo","forte","forth","forty","forum","found","foyer","frail","frame","frank","fraud","freak","freed","freer","fresh","friar","fried","frill","frisk","fritz","frock","frond","front","frost","froth","frown","froze","fruit","fudge","fugue","fully","fungi","funky","funny","furor","furry","fussy","fuzzy","gaffe","gaily","gamer","gamma","gamut","gassy","gaudy","gauge","gaunt","gauze","gavel","gawky","gayer","gayly","gazer","gecko","geeky","geese","genie","genre","ghost","ghoul","giant","giddy","gipsy","girly","girth","given","giver","glade","gland","glare","glass","glaze","gleam","glean","glide","glint","gloat","globe","gloom","glory","gloss","glove","glyph","gnash","gnome","godly","going","golem","golly","gonad","goner","goody","gooey","goofy","goose","gorge","gouge","gourd","grace","grade","graft","grail","grain","grand","grant","grape","graph","grasp","grass","grate","grave","gravy","graze","great","greed","green","greet","grief","grill","grime","grimy","grind","gripe","groan","groin","groom","grope","gross","group","grout","grove","growl","grown","gruel","gruff","grunt","guard","guava","guess","guest","guide","guild","guile","guilt","guise","gulch","gully","gumbo","gummy","guppy","gusto","gusty","gypsy","habit","hairy","halve","handy","happy","hardy","harem","harpy","harry","harsh","haste","hasty","hatch","hater","haunt","haute","haven","havoc","hazel","heady","heard","heart","heath","heave","heavy","hedge","hefty","heist","helix","hello","hence","heron","hilly","hinge","hippo","hippy","hitch","hoard","hobby","hoist","holly","homer","honey","honor","horde","horny","horse","hotel","hotly","hound","house","hovel","hover","howdy","human","humid","humor","humph","humus","hunch","hunky","hurry","husky","hussy","hutch","hydro","hyena","hymen","hyper","icily","icing","ideal","idiom","idiot","idler","idyll","igloo","iliac","image","imbue","impel","imply","inane","inbox","incur","index","inept","inert","infer","ingot","inlay","inlet","inner","input","inter","intro","ionic","irate","irony","islet","issue","itchy","ivory","jaunt","jazzy","jelly","jerky","jetty","jewel","jiffy","joint","joist","joker","jolly","joust","judge","juice","juicy","jumbo","jumpy","junta","junto","juror","kappa","karma","kayak","kebab","khaki","kinky","kiosk","kitty","knack","knave","knead","kneed","kneel","knelt","knife","knock","knoll","known","koala","krill","label","labor","laden","ladle","lager","lance","lanky","lapel","lapse","large","larva","lasso","latch","later","lathe","latte","laugh","layer","leach","leafy","leaky","leant","leapt","learn","lease","leash","least","leave","ledge","leech","leery","lefty","legal","leggy","lemon","lemur","leper","level","lever","libel","liege","light","liken","lilac","limbo","limit","linen","liner","lingo","lipid","lithe","liver","livid","llama","loamy","loath","lobby","local","locus","lodge","lofty","logic","login","loopy","loose","lorry","loser","louse","lousy","lover","lower","lowly","loyal","lucid","lucky","lumen","lumpy","lunar","lunch","lunge","lupus","lurch","lurid","lusty","lying","lymph","lynch","lyric","macaw","macho","macro","madam","madly","mafia","magic","magma","maize","major","maker","mambo","mamma","mammy","manga","mange","mango","mangy","mania","manic","manly","manor","maple","march","marry","marsh","mason","masse","match","matey","mauve","maxim","maybe","mayor","mealy","meant","meaty","mecca","medal","media","medic","melee","melon","mercy","merge","merit","merry","metal","meter","metro","micro","midge","midst","might","milky","mimic","mince","miner","minim","minor","minty","minus","mirth","miser","missy","mocha","modal","model","modem","mogul","moist","molar","moldy","money","month","moody","moose","moral","moron","morph","mossy","motel","motif","motor","motto","moult","mound","mount","mourn","mouse","mouth","mover","movie","mower","mucky","mucus","muddy","mulch","mummy","munch","mural","murky","mushy","music","musky","musty","myrrh","nadir","naive","nanny","nasal","nasty","natal","naval","navel","needy","neigh","nerdy","nerve","never","newer","newly","nicer","niche","niece","night","ninja","ninny","ninth","noble","nobly","noise","noisy","nomad","noose","north","nosey","notch","novel","nudge","nurse","nutty","nylon","nymph","oaken","obese","occur","ocean","octal","octet","odder","oddly","offal","offer","often","olden","older","olive","ombre","omega","onion","onset","opera","opine","opium","optic","orbit","order","organ","other","otter","ought","ounce","outdo","outer","outgo","ovary","ovate","overt","ovine","ovoid","owing","owner","oxide","ozone","paddy","pagan","paint","paler","palsy","panel","panic","pansy","papal","paper","parer","parka","parry","parse","party","pasta","paste","pasty","patch","patio","patsy","patty","pause","payee","payer","peace","peach","pearl","pecan","pedal","penal","pence","penne","penny","perch","peril","perky","pesky","pesto","petal","petty","phase","phone","phony","photo","piano","picky","piece","piety","piggy","pilot","pinch","piney","pinky","pinto","piper","pique","pitch","pithy","pivot","pixel","pixie","pizza","place","plaid","plain","plait","plane","plank","plant","plate","plaza","plead","pleat","plied","plier","pluck","plumb","plume","plump","plunk","plush","poesy","point","poise","poker","polar","polka","polyp","pooch","poppy","porch","poser","posit","posse","pouch","pound","pouty","power","prank","prawn","preen","press","price","prick","pride","pried","prime","primo","print","prior","prism","privy","prize","probe","prone","prong","proof","prose","proud","prove","prowl","proxy","prude","prune","psalm","pubic","pudgy","puffy","pulpy","pulse","punch","pupal","pupil","puppy","puree","purer","purge","purse","pushy","putty","pygmy","quack","quail","quake","qualm","quark","quart","quash","quasi","queen","queer","quell","query","quest","queue","quick","quiet","quill","quilt","quirk","quite","quota","quote","quoth","rabbi","rabid","racer","radar","radii","radio","rainy","raise","rajah","rally","ralph","ramen","ranch","randy","range","rapid","rarer","raspy","ratio","ratty","raven","rayon","razor","reach","react","ready","realm","rearm","rebar","rebel","rebus","rebut","recap","recur","recut","reedy","refer","refit","regal","rehab","reign","relax","relay","relic","remit","renal","renew","repay","repel","reply","rerun","reset","resin","retch","retro","retry","reuse","revel","revue","rhino","rhyme","rider","ridge","rifle","right","rigid","rigor","rinse","ripen","riper","risen","riser","risky","rival","river","rivet","roach","roast","robin","robot","rocky","rodeo","roger","rogue","roomy","roost","rotor","rouge","rough","round","rouse","route","rover","rowdy","rower","royal","ruddy","ruder","rugby","ruler","rumba","rumor","rupee","rural","rusty","sadly","safer","saint","salad","sally","salon","salsa","salty","salve","salvo","sandy","saner","sappy","sassy","satin","satyr","sauce","saucy","sauna","saute","savor","savoy","savvy","scald","scale","scalp","scaly","scamp","scant","scare","scarf","scary","scene","scent","scion","scoff","scold","scone","scoop","scope","score","scorn","scour","scout","scowl","scram","scrap","scree","screw","scrub","scrum","scuba","sedan","seedy","segue","seize","semen","sense","sepia","serif","serum","serve","setup","seven","sever","sewer","shack","shade","shady","shaft","shake","shaky","shale","shall","shalt","shame","shank","shape","shard","share","shark","sharp","shave","shawl","shear","sheen","sheep","sheer","sheet","sheik","shelf","shell","shied","shift","shine","shiny","shire","shirk","shirt","shoal","shock","shone","shook","shoot","shore","shorn","short","shout","shove","shown","showy","shrew","shrub","shrug","shuck","shunt","shush","shyly","siege","sieve","sight","sigma","silky","silly","since","sinew","singe","siren","sissy","sixth","sixty","skate","skier","skiff","skill","skimp","skirt","skulk","skull","skunk","slack","slain","slang","slant","slash","slate","slave","sleek","sleep","sleet","slept","slice","slick","slide","slime","slimy","sling","slink","sloop","slope","slosh","sloth","slump","slung","slunk","slurp","slush","slyly","smack","small","smart","smash","smear","smell","smelt","smile","smirk","smite","smith","smock","smoke","smoky","smote","snack","snail","snake","snaky","snare","snarl","sneak","sneer","snide","sniff","snipe","snoop","snore","snort","snout","snowy","snuck","snuff","soapy","sober","soggy","solar","solid","solve","sonar","sonic","sooth","sooty","sorry","sound","south","sower","space","spade","spank","spare","spark","spasm","spawn","speak","spear","speck","speed","spell","spelt","spend","spent","sperm","spice","spicy","spied","spiel","spike","spiky","spill","spilt","spine","spiny","spire","spite","splat","split","spoil","spoke","spoof","spook","spool","spoon","spore","sport","spout","spray","spree","sprig","spunk","spurn","spurt","squad","squat","squib","stack","staff","stage","staid","stain","stair","stake","stale","stalk","stall","stamp","stand","stank","stare","stark","start","stash","state","stave","stead","steak","steal","steam","steed","steel","steep","steer","stein","stern","stick","stiff","still","stilt","sting","stink","stint","stock","stoic","stoke","stole","stomp","stone","stony","stood","stool","stoop","store","stork","storm","story","stout","stove","strap","straw","stray","strip","strut","stuck","study","stuff","stump","stung","stunk","stunt","style","suave","sugar","suing","suite","sulky","sully","sumac","sunny","super","surer","surge","surly","sushi","swami","swamp","swarm","swash","swath","swear","sweat","sweep","sweet","swell","swept","swift","swill","swine","swing","swirl","swish","swoon","swoop","sword","swore","sworn","swung","synod","syrup","tabby","table","taboo","tacit","tacky","taffy","taint","taken","taker","tally","talon","tamer","tango","tangy","taper","tapir","tardy","tarot","taste","tasty","tatty","taunt","tawny","teach","teary","tease","teddy","teeth","tempo","tenet","tenor","tense","tenth","tepee","tepid","terra","terse","testy","thank","theft","their","theme","there","these","theta","thick","thief","thigh","thing","think","third","thong","thorn","those","three","threw","throb","throw","thrum","thumb","thump","thyme","tiara","tibia","tidal","tiger","tight","tilde","timer","timid","tipsy","titan","tithe","title","toast","today","toddy","token","tonal","tonga","tonic","tooth","topaz","topic","torch","torso","torus","total","totem","touch","tough","towel","tower","toxic","toxin","trace","track","tract","trade","trail","train","trait","tramp","trash","trawl","tread","treat","trend","triad","trial","tribe","trice","trick","tried","tripe","trite","troll","troop","trope","trout","trove","truce","truck","truer","truly","trump","trunk","truss","trust","truth","tryst","tubal","tuber","tulip","tulle","tumor","tunic","turbo","tutor","twang","tweak","tweed","tweet","twice","twine","twirl","twist","twixt","tying","udder","ulcer","ultra","umbra","uncle","uncut","under","undid","undue","unfed","unfit","unify","union","unite","unity","unlit","unmet","unset","untie","until","unwed","unzip","upper","upset","urban","urine","usage","usher","using","usual","usurp","utile","utter","vague","valet","valid","valor","value","valve","vapid","vapor","vault","vaunt","vegan","venom","venue","verge","verse","verso","verve","vicar","video","vigil","vigor","villa","vinyl","viola","viper","viral","virus","visit","visor","vista","vital","vivid","vixen","vocal","vodka","vogue","voice","voila","vomit","voter","vouch","vowel","vying","wacky","wafer","wager","wagon","waist","waive","waltz","warty","waste","watch","water","waver","waxen","weary","weave","wedge","weedy","weigh","weird","welch","welsh","wench","whack","whale","wharf","wheat","wheel","whelp","where","which","whiff","while","whine","whiny","whirl","whisk","white","whole","whoop","whose","widen","wider","widow","width","wield","wight","willy","wimpy","wince","winch","windy","wiser","wispy","witch","witty","woken","woman","women","woody","wooer","wooly","woozy","wordy","world","worry","worse","worst","worth","would","wound","woven","wrack","wrath","wreak","wreck","wrest","wring","wrist","write","wrong","wrote","wrung","wryly","yacht","yearn","yeast","yield","young","youth","zebra","zesty","zonal"];
 const EMBEDDED_FREQ = {"pos0":{"e":0.031115,"a":0.060933,"r":0.045376,"o":0.017718,"t":0.064391,"l":0.038029,"i":0.014693,"s":0.158168,"n":0.01599,"c":0.085566,"u":0.014261,"y":0.002593,"d":0.047969,"h":0.029818,"p":0.061366,"m":0.04624,"g":0.049697,"b":0.074762,"f":0.058773,"k":0.008643,"w":0.035869,"v":0.018583,"z":0.001296,"x":0.0,"q":0.009939,"j":0.008643},"pos1":{"e":0.104581,"a":0.131374,"r":0.115385,"o":0.12057,"t":0.033276,"l":0.086863,"i":0.087295,"s":0.006914,"n":0.037597,"c":0.017286,"u":0.08038,"y":0.009939,"d":0.008643,"h":0.06223,"p":0.026361,"m":0.016422,"g":0.005186,"b":0.006914,"f":0.003457,"k":0.004322,"w":0.019015,"v":0.006482,"z":0.000864,"x":0.00605,"q":0.002161,"j":0.000864},"pos2":{"e":0.076491,"a":0.132671,"r":0.070441,"o":0.105445,"t":0.047969,"l":0.048401,"i":0.114952,"s":0.034572,"n":0.060069,"c":0.024201,"u":0.071305,"y":0.012532,"d":0.032411,"h":0.003889,"p":0.025065,"m":0.026361,"g":0.028954,"b":0.024633,"f":0.010804,"k":0.005186,"w":0.011236,"v":0.021175,"z":0.004754,"x":0.005186,"q":0.000432,"j":0.001296},"pos3":{"e":0.137424,"a":0.070441,"r":0.065687,"o":0.057044,"t":0.060069,"l":0.070009,"i":0.06828,"s":0.073898,"n":0.078652,"c":0.065687,"u":0.035436,"y":0.001296,"d":0.029818,"h":0.0121,"p":0.021608,"m":0.029386,"g":0.032844,"b":0.010372,"f":0.015125,"k":0.023768,"w":0.010804,"v":0.019879,"z":0.008643,"x":0.001296,"q":0.0,"j":0.000864},"pos4":{"e":0.183232,"a":0.027658,"r":0.091616,"o":0.025065,"t":0.109334,"l":0.067416,"i":0.004754,"s":0.015557,"n":0.05618,"c":0.013397,"u":0.000432,"y":0.157303,"d":0.050994,"h":0.060069,"p":0.024201,"m":0.01815,"g":0.017718,"b":0.004754,"f":0.011236,"k":0.048833,"w":0.007347,"v":0.0,"z":0.001729,"x":0.003457,"q":0.0,"j":0.0},"overall":{"e":0.532844,"a":0.423077,"r":0.388505,"o":0.325843,"t":0.315039,"l":0.310717,"i":0.289974,"s":0.28911,"n":0.248487,"c":0.206137,"u":0.201815,"y":0.183665,"d":0.169836,"h":0.168107,"p":0.1586,"m":0.13656,"g":0.134399,"b":0.121435,"f":0.099395,"k":0.090752,"w":0.08427,"v":0.066119,"z":0.017286,"x":0.01599,"q":0.012532,"j":0.011668}};
 
 // ===== State =====
@@ -270,12 +217,15 @@ let feedbackState = [];
 let gameOver = false;
 let starterWord = 'stare';
 let strategy = 'classic';
+// Track known greens from all previous guesses (for optimized mode)
+let confirmedGreens = {}; // {position: letter}
 
 const $ = id => document.getElementById(id);
 
 const STRATEGY_DESCS = {
   classic: 'Picks the word with the most common letters in their most common positions.',
-  entropy: 'Picks the word that maximizes information gain — best at splitting remaining candidates. Slower but smarter.'
+  entropy: 'Maximizes information gain — picks the word that best splits remaining candidates. Slower but smarter.',
+  optimized: 'Guess 2: avoids confirmed greens to discover new letters. Guess 3+: frequency-weighted entropy — prefers common words over obscure ones (fetches word frequency data from Datamuse API).'
 };
 
 function pickStarter(el) {
@@ -283,7 +233,6 @@ function pickStarter(el) {
   el.classList.add('selected');
   starterWord = el.dataset.word;
 }
-
 function pickStrategy(el) {
   document.querySelectorAll('#strategyPills .pill').forEach(p => p.classList.remove('selected'));
   el.classList.add('selected');
@@ -297,75 +246,6 @@ function log(msg) {
   el.scrollTop = el.scrollHeight;
 }
 
-// ===== CSV Parsing (for optional custom URLs) =====
-function parseCSVLine(line) {
-  const result = []; let current = ''; let inQ = false;
-  for (let i = 0; i < line.length; i++) {
-    const ch = line[i];
-    if (inQ) {
-      if (ch === '"' && line[i+1] === '"') { current += '"'; i++; }
-      else if (ch === '"') inQ = false;
-      else current += ch;
-    } else {
-      if (ch === '"') inQ = true;
-      else if (ch === ',') { result.push(current.trim()); current = ''; }
-      else current += ch;
-    }
-  }
-  result.push(current.trim());
-  return result;
-}
-
-function parseWordListCSV(text) {
-  const lines = text.split(/\r?\n/).filter(l => l.trim());
-  if (!lines.length) return [];
-  const header = parseCSVLine(lines[0]);
-  const idx = header.findIndex(h => h.toLowerCase() === 'word');
-  let words;
-  if (idx >= 0) {
-    words = lines.slice(1).map(l => (parseCSVLine(l)[idx] || '').toLowerCase().trim());
-  } else if (header.length === 1 || (header[0].length === 5 && /^[a-z]+$/i.test(header[0]))) {
-    words = lines.map(l => (parseCSVLine(l)[0] || '').toLowerCase().trim());
-  } else {
-    words = lines.slice(1).map(l => (parseCSVLine(l)[0] || '').toLowerCase().trim());
-  }
-  return words.filter(w => w.length === 5 && /^[a-z]+$/.test(w));
-}
-
-function parseFreqCSV(text) {
-  const lines = text.split(/\r?\n/).filter(l => l.trim());
-  if (lines.length < 2) return null;
-  const header = parseCSVLine(lines[0]).map(h => h.toLowerCase().trim());
-  const letterIdx = header.findIndex(h => h === 'letter');
-  const freq = { pos0:{}, pos1:{}, pos2:{}, pos3:{}, pos4:{}, overall:{} };
-  // Map header names to position keys
-  const colMap = {};
-  header.forEach((h, i) => {
-    if (/^(char\s*1|pos\s*0|position\s*0|first)$/i.test(h)) colMap.pos0 = i;
-    else if (/^(char\s*2|pos\s*1|position\s*1|second)$/i.test(h)) colMap.pos1 = i;
-    else if (/^(char\s*3|pos\s*2|position\s*2|third)$/i.test(h)) colMap.pos2 = i;
-    else if (/^(char\s*4|pos\s*3|position\s*3|fourth)$/i.test(h)) colMap.pos3 = i;
-    else if (/^(char\s*5|pos\s*4|position\s*4|fifth)$/i.test(h)) colMap.pos4 = i;
-    else if (/^(total|overall|sum)$/i.test(h)) colMap.overall = i;
-  });
-  const li = letterIdx >= 0 ? letterIdx : 0;
-  const totalWords = 2314; // normalize raw counts
-  for (let i = 1; i < lines.length; i++) {
-    const cols = parseCSVLine(lines[i]);
-    const letter = (cols[li] || '').toLowerCase().trim();
-    if (!letter || letter.length !== 1) continue;
-    for (let p = 0; p < 5; p++) {
-      const ci = colMap[`pos${p}`] !== undefined ? colMap[`pos${p}`] : li + 1 + p;
-      const raw = parseFloat(cols[ci]) || 0;
-      freq[`pos${p}`][letter] = raw > 1 ? raw / totalWords : raw; // auto-detect raw vs normalized
-    }
-    const oi = colMap.overall !== undefined ? colMap.overall : li + 6;
-    const rawO = parseFloat(cols[oi]) || 0;
-    freq.overall[letter] = rawO > 1 ? rawO / totalWords : rawO;
-  }
-  return freq;
-}
-
 function computeFreq(words) {
   const freq = { pos0:{}, pos1:{}, pos2:{}, pos3:{}, pos4:{}, overall:{} };
   for (let c = 97; c <= 122; c++) {
@@ -376,10 +256,7 @@ function computeFreq(words) {
   words.forEach(w => {
     for (let i = 0; i < 5; i++) {
       const ch = w[i];
-      if (freq[`pos${i}`][ch] !== undefined) {
-        freq[`pos${i}`][ch]++;
-        freq.overall[ch]++;
-      }
+      if (freq[`pos${i}`][ch] !== undefined) { freq[`pos${i}`][ch]++; freq.overall[ch]++; }
     }
   });
   const n = words.length || 1;
@@ -391,44 +268,13 @@ function computeFreq(words) {
   return freq;
 }
 
-// ===== Game =====
-async function startGame() {
-  const dictUrl = $('dictUrl').value.trim();
-  const freqUrlVal = $('freqUrl').value.trim();
-
-  wordList = [...EMBEDDED_WORDS];
-  freqData = JSON.parse(JSON.stringify(EMBEDDED_FREQ));
-
-  if (dictUrl) {
-    try {
-      $('startBtn').disabled = true;
-      $('startBtn').textContent = 'Loading...';
-      const resp = await fetch(dictUrl);
-      const text = await resp.text();
-      const parsed = parseWordListCSV(text);
-      if (parsed.length > 0) {
-        wordList = parsed;
-        log(`Loaded ${wordList.length} words from CSV.`);
-        freqData = computeFreq(wordList);
-      }
-    } catch (e) { log(`Dict load failed: ${e.message}. Using built-in.`); }
-  }
-
-  if (freqUrlVal) {
-    try {
-      const resp = await fetch(freqUrlVal);
-      const text = await resp.text();
-      const parsed = parseFreqCSV(text);
-      if (parsed) { freqData = parsed; log('Loaded custom frequency CSV.'); }
-    } catch (e) { log(`Freq load failed: ${e.message}. Using built-in.`); }
-  }
-
-  candidates = [...wordList];
-  guessNum = 0; gameOver = false;
-
+// ===== Board rendering: dynamic rows =====
+function renderBoard() {
   const board = $('board');
   board.innerHTML = '';
-  for (let r = 0; r < maxGuesses; r++) {
+  // Show: completed rows + current guess row + 1 empty row (unless at max)
+  const rowsToShow = Math.min(guessNum + 2, maxGuesses);
+  for (let r = 0; r < rowsToShow; r++) {
     const row = document.createElement('div');
     row.className = 'row'; row.id = `row${r}`;
     for (let c = 0; c < 5; c++) {
@@ -438,13 +284,118 @@ async function startGame() {
     }
     board.appendChild(row);
   }
+}
 
-  $('setupPanel').classList.add('hidden');
-  ['statusBar','board','feedbackHelp','actions','thinkingLog'].forEach(id => $(id).classList.remove('hidden'));
-  $('resultPanel').classList.add('hidden');
+// Re-paint past guesses onto the freshly rendered board
+function repaintPastGuesses() {
+  const classes = ['absent', 'present', 'correct'];
+  for (let r = 0; r < guessNum; r++) {
+    const hist = guessHistory[r];
+    if (!hist) continue;
+    for (let c = 0; c < 5; c++) {
+      const tile = $(`tile-${r}-${c}`);
+      if (tile) {
+        tile.textContent = hist.word[c];
+        tile.className = `tile ${classes[hist.feedback[c]]}`;
+      }
+    }
+  }
+}
 
-  log(`Game started. ${candidates.length} possible words. Strategy: ${strategy === 'entropy' ? 'Entropy (max info gain)' : 'Classic (letter frequency)'}.`);
-  makeGuess();
+let guessHistory = []; // [{word, feedback}]
+
+// ===== Dictionary fallback: fetch from free dictionary API =====
+async function fetchDictionaryWords(constraints) {
+  // constraints: {greens: {pos: letter}, yellows: [{letter, notAt}], grays: Set}
+  // We'll generate candidate patterns and check them against a dictionary API
+  log('Searching online dictionaries...');
+
+  // Build a regex pattern from known constraints
+  const pattern = [];
+  for (let i = 0; i < 5; i++) {
+    if (constraints.greens[i]) {
+      pattern.push(constraints.greens[i]);
+    } else {
+      // Exclude grays and yellows-at-this-position
+      let excluded = new Set(constraints.grays);
+      constraints.yellows.forEach(y => { if (y.notAt.has(i)) excluded.add(y.letter); });
+      const allowed = 'abcdefghijklmnopqrstuvwxyz'.split('').filter(c => !excluded.has(c));
+      pattern.push(`[${allowed.join('')}]`);
+    }
+  }
+  const regex = new RegExp(`^${pattern.join('')}$`);
+
+  // Required letters (from yellows)
+  const required = constraints.yellows.map(y => y.letter);
+
+  // Try a broader word list approach: generate likely candidates using letter frequency
+  // and validate them against the Datamuse API (free, no key needed)
+  const possibleWords = [];
+
+  try {
+    // Use datamuse to find 5-letter words matching our green letters
+    let queryParts = [];
+    for (let i = 0; i < 5; i++) {
+      queryParts.push(constraints.greens[i] || '?');
+    }
+    const spPattern = queryParts.join('');
+    const url = `https://api.datamuse.com/words?sp=${spPattern}&max=200`;
+    const resp = await fetch(url);
+    const data = await resp.json();
+
+    for (const entry of data) {
+      const w = entry.word.toLowerCase();
+      if (w.length !== 5 || !/^[a-z]+$/.test(w)) continue;
+      if (!regex.test(w)) continue;
+      // Check required letters present
+      if (required.every(l => w.includes(l))) {
+        possibleWords.push(w);
+      }
+    }
+    log(`Found ${possibleWords.length} words from online dictionary.`);
+  } catch (e) {
+    log(`Online dictionary search failed: ${e.message}`);
+  }
+
+  return possibleWords;
+}
+
+function buildConstraints() {
+  // Build constraints from all guess history
+  const greens = {};
+  const yellowMap = {}; // letter -> Set of positions it's NOT at
+  const grays = new Set();
+
+  for (const hist of guessHistory) {
+    for (let i = 0; i < 5; i++) {
+      const letter = hist.word[i];
+      const fb = hist.feedback[i];
+      if (fb === 2) {
+        greens[i] = letter;
+      } else if (fb === 1) {
+        if (!yellowMap[letter]) yellowMap[letter] = new Set();
+        yellowMap[letter].add(i);
+      } else {
+        // Only gray if the letter doesn't appear as green/yellow elsewhere in this guess
+        const hasElsewhere = hist.feedback.some((f, j) => j !== i && hist.word[j] === letter && f > 0);
+        if (!hasElsewhere) grays.add(letter);
+      }
+    }
+  }
+
+  const yellows = Object.entries(yellowMap).map(([letter, notAt]) => ({ letter, notAt }));
+  return { greens, yellows, grays };
+}
+
+// ===== Scoring =====
+
+// Bonus for words with all unique letters (no repeats).
+// Returns a small bonus that acts as a tiebreaker: 5 unique = +0.4, 4 = +0.2, 3 or less = 0
+function uniqueLetterBonus(word) {
+  const unique = new Set(word).size;
+  if (unique === 5) return 0.4;
+  if (unique === 4) return 0.2;
+  return 0;
 }
 
 function scoreWord(word) {
@@ -453,103 +404,219 @@ function scoreWord(word) {
   for (let i = 0; i < 5; i++) {
     const ch = word[i];
     score += (freqData[`pos${i}`]?.[ch] || 0) * 3;
-    if (!seen.has(ch)) {
-      score += (freqData.overall?.[ch] || 0) * 2;
-      seen.add(ch);
-    }
+    if (!seen.has(ch)) { score += (freqData.overall?.[ch] || 0) * 2; seen.add(ch); }
   }
   score += seen.size * 0.5;
+  score += uniqueLetterBonus(word);
   return score;
 }
 
-// Compute the feedback pattern a guess would produce against a given answer
 function getFeedbackPattern(guess, answer) {
-  const result = [0, 0, 0, 0, 0];
-  const used = [false, false, false, false, false];
-  for (let i = 0; i < 5; i++) {
-    if (guess[i] === answer[i]) { result[i] = 2; used[i] = true; }
-  }
+  const result = [0,0,0,0,0];
+  const used = [false,false,false,false,false];
+  for (let i = 0; i < 5; i++) { if (guess[i] === answer[i]) { result[i] = 2; used[i] = true; } }
   for (let i = 0; i < 5; i++) {
     if (result[i] === 2) continue;
-    for (let j = 0; j < 5; j++) {
-      if (!used[j] && guess[i] === answer[j]) { result[i] = 1; used[j] = true; break; }
-    }
+    for (let j = 0; j < 5; j++) { if (!used[j] && guess[i] === answer[j]) { result[i] = 1; used[j] = true; break; } }
   }
-  // Encode as a single number for fast grouping: base-3 encoding
   return result[0]*81 + result[1]*27 + result[2]*9 + result[3]*3 + result[4];
 }
 
-// Entropy score: how well does this guess split the remaining candidates?
-function entropyScore(guess, candidateList) {
+function entropyScore(guess, cands) {
   const buckets = new Map();
-  for (const answer of candidateList) {
-    const pattern = getFeedbackPattern(guess, answer);
-    buckets.set(pattern, (buckets.get(pattern) || 0) + 1);
+  for (const a of cands) {
+    const p = getFeedbackPattern(guess, a);
+    buckets.set(p, (buckets.get(p) || 0) + 1);
   }
-  const n = candidateList.length;
-  let entropy = 0;
-  for (const count of buckets.values()) {
-    const p = count / n;
-    if (p > 0) entropy -= p * Math.log2(p);
-  }
-  return entropy;
+  const n = cands.length;
+  let ent = 0;
+  for (const count of buckets.values()) { const p = count / n; if (p > 0) ent -= p * Math.log2(p); }
+  return ent + uniqueLetterBonus(guess);
 }
 
-// Find which positions are "known greens" — all candidates have the same letter there
-function findKnownGreens(guess, candidateList) {
-  const greens = [false, false, false, false, false];
-  for (let i = 0; i < 5; i++) {
-    greens[i] = candidateList.every(w => w[i] === guess[i]);
+// Frequency-weighted entropy: common words contribute more to the entropy calculation.
+// Each candidate's "vote" is weighted by its word frequency, so the algorithm
+// prefers guesses that best split the *common* words, not rare ones.
+function weightedEntropyScore(guess, cands) {
+  const buckets = new Map(); // pattern -> total weight
+  let totalWeight = 0;
+  for (const a of cands) {
+    const p = getFeedbackPattern(guess, a);
+    const w = wordFreqCache[a] || 1; // default weight 1 if unknown
+    buckets.set(p, (buckets.get(p) || 0) + w);
+    totalWeight += w;
   }
+  if (totalWeight === 0) return entropyScore(guess, cands);
+  let ent = 0;
+  for (const wt of buckets.values()) {
+    const p = wt / totalWeight;
+    if (p > 0) ent -= p * Math.log2(p);
+  }
+  return ent + uniqueLetterBonus(guess);
+}
+
+// Optimized scoring: like entropy but avoids confirmed green positions to discover new info
+function optimizedScore(guess, cands) {
+  let penalty = 0;
+  for (const [pos, letter] of Object.entries(confirmedGreens)) {
+    if (guess[parseInt(pos)] === letter) penalty += 0.3;
+  }
+  return entropyScore(guess, cands) - penalty + uniqueLetterBonus(guess);
+}
+
+// ===== Word Frequency Cache =====
+// Fetched from Datamuse API at game start; used by optimized mode on guess 3+
+let wordFreqCache = {}; // word -> frequency weight (higher = more common)
+let freqCacheReady = false;
+
+async function loadWordFrequencies() {
+  // Fetch frequency data from Datamuse for all candidate words in batches.
+  // Uses the sp (spelled-like) + md=f (frequency metadata) endpoint.
+  // We batch by first letter to stay within reasonable request sizes.
+  freqCacheReady = false;
+  wordFreqCache = {};
+
+  const alphabet = 'abcdefghijklmnopqrstuvwxyz';
+  const batchPromises = [];
+
+  for (const letter of alphabet) {
+    // Datamuse: sp=X???? matches 5-letter words starting with X
+    // md=f adds frequency data in tags as "f:123.456"
+    const url = `https://api.datamuse.com/words?sp=${letter}????&md=f&max=500`;
+    batchPromises.push(
+      fetch(url)
+        .then(r => r.json())
+        .then(data => {
+          for (const entry of data) {
+            const w = entry.word?.toLowerCase();
+            if (!w || w.length !== 5 || !/^[a-z]+$/.test(w)) continue;
+            // Extract frequency from tags: look for "f:123.456"
+            const fTag = entry.tags?.find(t => t.startsWith('f:'));
+            if (fTag) {
+              const freq = parseFloat(fTag.substring(2)) || 0;
+              wordFreqCache[w] = freq;
+            }
+          }
+        })
+        .catch(() => {}) // silently skip failed batches
+    );
+  }
+
+  try {
+    await Promise.all(batchPromises);
+    const loaded = Object.keys(wordFreqCache).length;
+    if (loaded > 0) {
+      freqCacheReady = true;
+      log(`Loaded word frequencies for ${loaded} words.`);
+    } else {
+      log('Word frequency data unavailable (offline?). Using uniform weights.');
+    }
+  } catch (e) {
+    log('Word frequency fetch failed. Using uniform weights.');
+  }
+}
+
+function findKnownGreens(guess, cands) {
+  const greens = [false,false,false,false,false];
+  for (let i = 0; i < 5; i++) greens[i] = cands.every(w => w[i] === guess[i]);
   return greens;
+}
+
+// ===== Game =====
+async function startGame() {
+  wordList = [...EMBEDDED_WORDS];
+  freqData = JSON.parse(JSON.stringify(EMBEDDED_FREQ));
+  candidates = [...wordList];
+  guessNum = 0; gameOver = false;
+  guessHistory = [];
+  confirmedGreens = {};
+
+  $('setupPanel').classList.add('hidden');
+  ['statusBar','board','actions','feedbackHelp','thinkingLog'].forEach(id => $(id).classList.remove('hidden'));
+  $('resultPanel').classList.add('hidden');
+  $('thinkingLog').textContent = '';
+
+  log(`Game started. ${candidates.length} words. Strategy: ${STRATEGY_DESCS[strategy].split('.')[0]}.`);
+
+  // For optimized mode, fetch word frequencies in background (non-blocking)
+  if (strategy === 'optimized' && !freqCacheReady) {
+    log('Fetching word frequency data in background...');
+    loadWordFrequencies(); // don't await — let it run while user plays
+  }
+
+  renderBoard();
+  makeGuess();
 }
 
 function makeGuess() {
   if (gameOver || guessNum >= maxGuesses) return;
 
   $('guessLabel').textContent = `Guess ${guessNum + 1} / ${maxGuesses}`;
-  $('remainingLabel').textContent = `${candidates.length} words left`;
+  $('remainingLabel').textContent = `${candidates.length} left`;
 
   let bestWord = '', bestScore = -Infinity;
 
-  // Use the chosen starter word for the first guess
   if (guessNum === 0 && starterWord) {
     bestWord = starterWord;
-    bestScore = strategy === 'entropy' ? entropyScore(bestWord, candidates) : scoreWord(bestWord);
-  } else if (strategy === 'entropy') {
-    // Entropy mode: evaluate each candidate for information gain
-    // For large candidate sets, only score candidates (not full word list) to stay fast
-    const pool = candidates.length > 500 ? candidates : candidates;
-    const label = $('remainingLabel');
-    label.innerHTML = `${candidates.length} words left <span class="thinking-spinner"></span>`;
-
-    // Use setTimeout to let the spinner render, then compute
-    setTimeout(() => {
-      for (const w of pool) {
-        const s = entropyScore(w, candidates);
-        if (s > bestScore) { bestScore = s; bestWord = w; }
-      }
-      label.textContent = `${candidates.length} words left`;
-      log(`Guessing: "${bestWord.toUpperCase()}" (entropy: ${bestScore.toFixed(3)} bits)`);
-      showGuessOnBoard(bestWord);
-    }, 20);
-    return; // showGuessOnBoard will handle the rest
-  } else {
-    candidates.forEach(w => {
-      const s = scoreWord(w);
-      if (s > bestScore) { bestScore = s; bestWord = w; }
-    });
+    log(`Opening: "${bestWord.toUpperCase()}"`);
+    showGuessOnBoard(bestWord);
+    return;
   }
 
+  // Optimized: only on guess 1 (2nd try) if greens exist and enough candidates.
+  // From guess 2+ (3rd try onward), optimized uses frequency-weighted entropy.
+  // Also use entropy for guess 1 with optimized strategy if no greens were found.
+  const useOptimized = strategy === 'optimized' && guessNum === 1 && candidates.length > 3
+    && Object.keys(confirmedGreens).length > 0;
+  const useWeightedEntropy = strategy === 'optimized' && guessNum >= 2 && freqCacheReady;
+  const useEntropy = strategy === 'entropy'
+    || (strategy === 'optimized' && guessNum >= 2 && !freqCacheReady)
+    || (strategy === 'optimized' && guessNum === 1 && !useOptimized);
+
+  if (useOptimized || useEntropy || useWeightedEntropy) {
+    const scoreFn = useOptimized ? optimizedScore
+                  : useWeightedEntropy ? weightedEntropyScore
+                  : entropyScore;
+    const modeLabel = useOptimized ? 'optimized'
+                    : useWeightedEntropy ? 'weighted-entropy'
+                    : 'entropy';
+    const label = $('remainingLabel');
+    label.innerHTML = `${candidates.length} left <span class="thinking-spinner"></span>`;
+
+    setTimeout(() => {
+      // For optimized: prefer words from full wordlist that avoid green positions
+      const pool = useOptimized ? wordList : candidates;
+      for (const w of pool) {
+        const s = scoreFn(w, candidates);
+        if (s > bestScore) { bestScore = s; bestWord = w; }
+      }
+      // Fallback: if optimized found nothing good, use candidates
+      if (!bestWord && useOptimized) {
+        for (const w of candidates) {
+          const s = entropyScore(w, candidates);
+          if (s > bestScore) { bestScore = s; bestWord = w; }
+        }
+      }
+      label.textContent = `${candidates.length} left`;
+      log(`Guessing: "${bestWord.toUpperCase()}" (${modeLabel}: ${bestScore.toFixed(3)})`);
+      showGuessOnBoard(bestWord);
+    }, 20);
+    return;
+  }
+
+  // Classic
+  candidates.forEach(w => {
+    const s = scoreWord(w);
+    if (s > bestScore) { bestScore = s; bestWord = w; }
+  });
   log(`Guessing: "${bestWord.toUpperCase()}" (score: ${bestScore.toFixed(2)})`);
   showGuessOnBoard(bestWord);
 }
 
 function showGuessOnBoard(bestWord) {
   currentGuess = bestWord;
-  feedbackState = [0, 0, 0, 0, 0];
+  feedbackState = [0,0,0,0,0];
 
-  // Find positions where all candidates agree (known greens)
   const knownGreens = findKnownGreens(bestWord, candidates);
 
   for (let c = 0; c < 5; c++) {
@@ -558,31 +625,28 @@ function showGuessOnBoard(bestWord) {
     tile.style.animationDelay = `${c * 0.08}s`;
 
     if (knownGreens[c]) {
-      // Auto-set as green, non-clickable
-      tile.className = 'tile active correct locked';
+      // Auto-green, but CLICKABLE to override
+      tile.className = 'tile active correct autogreen clickable';
       feedbackState[c] = 2;
-      tile.onclick = null;
+      tile.onclick = () => cycleTile(guessNum, c);
     } else {
       tile.className = 'tile active absent clickable';
       tile.onclick = () => cycleTile(guessNum, c);
     }
   }
 
-  // If all 5 are auto-green, it's a win
-  if (feedbackState.every(f => f === 2)) {
-    gameOver = true;
-    finalizeTiles();
-    showResult(true);
-    return;
-  }
-
+  // Even if all 5 are auto-green (single candidate), let the user confirm or override.
+  // The word might not be in the dictionary, so don't auto-declare a win.
   $('confirmBtn').disabled = false;
 }
 
 function cycleTile(row, col) {
   if (gameOver || row !== guessNum) return;
   const tile = $(`tile-${row}-${col}`);
-  if (tile.classList.contains('locked')) return; // don't toggle auto-greens
+
+  // Remove autogreen marker if user overrides
+  tile.classList.remove('autogreen');
+
   feedbackState[col] = (feedbackState[col] + 1) % 3;
   const classes = ['absent', 'present', 'correct'];
   tile.className = `tile active clickable ${classes[feedbackState[col]]}`;
@@ -590,7 +654,7 @@ function cycleTile(row, col) {
   setTimeout(() => tile.classList.remove('flip'), 400);
 }
 
-function confirmFeedback() {
+async function confirmFeedback() {
   if (gameOver) return;
 
   if (feedbackState.every(f => f === 2)) {
@@ -601,12 +665,29 @@ function confirmFeedback() {
   const fb = [...feedbackState];
   log(`Feedback: ${fb.map(f => ['⬛','🟨','🟩'][f]).join('')}`);
 
+  // Update confirmed greens
+  for (let i = 0; i < 5; i++) {
+    if (fb[i] === 2) confirmedGreens[i] = guess[i];
+  }
+
+  // Save history
+  guessHistory.push({ word: guess, feedback: fb });
+
   candidates = candidates.filter(word => matchesFeedback(word, guess, fb));
   log(`Narrowed to ${candidates.length} candidates.`);
 
+  // If no candidates, try online dictionary
   if (candidates.length === 0) {
-    log('No matching words! Check your feedback or the word may not be in the dictionary.');
-    gameOver = true; finalizeTiles(); showResult(false, true); return;
+    log('Word not in built-in list. Searching online...');
+    const constraints = buildConstraints();
+    const onlineWords = await fetchDictionaryWords(constraints);
+    if (onlineWords.length > 0) {
+      candidates = onlineWords;
+      log(`Found ${candidates.length} online matches. Continuing!`);
+    } else {
+      log('No matches found anywhere. Check your feedback colors.');
+      gameOver = true; finalizeTiles(); showResult(false, true); return;
+    }
   }
 
   freqData = computeFreq(candidates);
@@ -614,22 +695,21 @@ function confirmFeedback() {
   guessNum++;
 
   if (guessNum >= maxGuesses) { gameOver = true; showResult(false); return; }
+
+  // Re-render board with dynamic rows, repaint past guesses
+  renderBoard();
+  repaintPastGuesses();
   makeGuess();
 }
 
 function matchesFeedback(word, guess, fb) {
-  const result = [0, 0, 0, 0, 0];
+  const result = [0,0,0,0,0];
   const wordChars = [...word];
-  const used = [false, false, false, false, false];
-
-  for (let i = 0; i < 5; i++) {
-    if (guess[i] === wordChars[i]) { result[i] = 2; used[i] = true; }
-  }
+  const used = [false,false,false,false,false];
+  for (let i = 0; i < 5; i++) { if (guess[i] === wordChars[i]) { result[i] = 2; used[i] = true; } }
   for (let i = 0; i < 5; i++) {
     if (result[i] === 2) continue;
-    for (let j = 0; j < 5; j++) {
-      if (!used[j] && guess[i] === wordChars[j]) { result[i] = 1; used[j] = true; break; }
-    }
+    for (let j = 0; j < 5; j++) { if (!used[j] && guess[i] === wordChars[j]) { result[i] = 1; used[j] = true; break; } }
   }
   for (let i = 0; i < 5; i++) { if (result[i] !== fb[i]) return false; }
   return true;
@@ -639,8 +719,7 @@ function finalizeTiles() {
   const classes = ['absent', 'present', 'correct'];
   for (let c = 0; c < 5; c++) {
     const tile = $(`tile-${guessNum}-${c}`);
-    tile.className = `tile ${classes[feedbackState[c]]}`;
-    tile.onclick = null;
+    if (tile) { tile.className = `tile ${classes[feedbackState[c]]}`; tile.onclick = null; }
   }
 }
 
@@ -648,20 +727,19 @@ function showResult(won, noWords = false) {
   $('feedbackHelp').classList.add('hidden');
   $('actions').classList.add('hidden');
   $('resultPanel').classList.remove('hidden');
-
   if (won) {
     $('resultEmoji').textContent = '🎉';
     $('resultTitle').textContent = `Got it in ${guessNum + 1}!`;
     $('resultMsg').textContent = `The word was "${currentGuess.toUpperCase()}".`;
   } else if (noWords) {
     $('resultEmoji').textContent = '🤔';
-    $('resultTitle').textContent = 'Hmm...';
-    $('resultMsg').textContent = 'No words match that feedback. Is the word in the dictionary? Double-check your colors.';
+    $('resultTitle').textContent = 'Stumped!';
+    $('resultMsg').textContent = 'No words match that feedback — not even online. Double-check your colors?';
   } else {
     $('resultEmoji').textContent = '😅';
     $('resultTitle').textContent = 'You stumped me!';
     const top3 = candidates.slice(0, 3).map(w => w.toUpperCase()).join(', ');
-    $('resultMsg').textContent = `I couldn't get it in ${maxGuesses} guesses. My best remaining: ${top3 || 'none'}.`;
+    $('resultMsg').textContent = `Couldn't get it in ${maxGuesses}. My best remaining: ${top3 || 'none'}.`;
   }
 }
 
@@ -672,7 +750,9 @@ function resetGame() {
   $('startBtn').disabled = false;
   $('startBtn').textContent = "I've thought of a word — Start!";
   gameOver = false; guessNum = 0;
+  guessHistory = []; confirmedGreens = {};
 }
+
 </script>
 </body>
 </html>

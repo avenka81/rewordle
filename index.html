@@ -2,182 +2,323 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Re-Wordle — Can I Guess Your Word?</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
   :root {
-    --bg: #1a1a2e;
-    --bg-card: #16213e;
-    --bg-tile: #0f3460;
-    --correct: #2ecc71;
-    --present: #f39c12;
-    --absent: #4a4a6a;
-    --text: #e8e8f0;
-    --text-dim: #8888aa;
-    --accent: #e94560;
-    --tile-size: 62px;
-    --gap: 8px;
+    /* Apple HIG-inspired dark palette */
+    --bg: #000000;
+    --bg-primary: #1c1c1e;
+    --bg-secondary: #2c2c2e;
+    --bg-tertiary: #3a3a3c;
+    --bg-elevated: rgba(44,44,46,0.72);
+    --separator: rgba(84,84,88,0.65);
+
+    /* Semantic colors (Apple-style) */
+    --correct: #30D158;      /* system green */
+    --present: #FF9F0A;      /* system orange */
+    --absent: #48484a;       /* system gray 3 */
+    --accent: #0A84FF;       /* system blue */
+    --accent-hover: #409CFF;
+    --destructive: #FF453A;  /* system red */
+
+    /* Text */
+    --text-primary: #FFFFFF;
+    --text-secondary: rgba(235,235,245,0.6);
+    --text-tertiary: rgba(235,235,245,0.5);
+    --text-on-fill: #FFFFFF;
+
+    /* Tiles */
+    --tile-size: 60px;
+    --gap: 6px;
+
+    /* Materials */
+    --glass: rgba(44,44,46,0.72);
+    --glass-border: rgba(255,255,255,0.08);
+    --blur: 20px;
   }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
   body {
-    font-family: 'Outfit', sans-serif;
-    background: var(--bg); color: var(--text);
-    min-height: 100vh; display: flex; flex-direction: column;
-    align-items: center; overflow-x: hidden;
+    font-family: -apple-system, 'SF Pro Display', 'SF Pro Text', 'Inter', 'Helvetica Neue', sans-serif;
+    background: var(--bg); color: var(--text-primary);
+    min-height: 100vh; min-height: 100dvh;
+    display: flex; flex-direction: column; align-items: center;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
   }
+
+  /* Subtle ambient glow */
   body::before {
-    content: ''; position: fixed; inset: 0;
+    content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
     background:
-      radial-gradient(ellipse at 20% 50%, rgba(233,69,96,0.08) 0%, transparent 50%),
-      radial-gradient(ellipse at 80% 20%, rgba(46,204,113,0.06) 0%, transparent 50%),
-      radial-gradient(ellipse at 50% 90%, rgba(243,156,18,0.05) 0%, transparent 50%);
-    pointer-events: none; z-index: 0;
+      radial-gradient(ellipse at 30% 0%, rgba(10,132,255,0.06) 0%, transparent 50%),
+      radial-gradient(ellipse at 70% 100%, rgba(48,209,88,0.04) 0%, transparent 50%);
   }
-  header { position: relative; z-index: 1; text-align: center; padding: 24px 20px 8px; }
+
+  /* ===== Header ===== */
+  header {
+    position: relative; z-index: 1; text-align: center;
+    padding: 20px 20px 6px; width: 100%; max-width: 520px;
+  }
+  .header-row {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+  }
+  .app-icon {
+    width: 36px; height: 36px; border-radius: 8px;
+    background: linear-gradient(135deg, var(--correct), #34C759);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; font-weight: 800; color: #fff;
+    box-shadow: 0 2px 8px rgba(48,209,88,0.3);
+  }
   header h1 {
-    font-family: 'Space Mono', monospace; font-size: 2rem; font-weight: 700;
-    letter-spacing: -1px;
-    background: linear-gradient(135deg, var(--accent), var(--present));
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    font-size: 1.5rem; font-weight: 700; letter-spacing: -0.5px;
+    color: var(--text-primary);
   }
-  header p { color: var(--text-dim); font-size: 0.92rem; margin-top: 4px; font-weight: 300; }
-  .container { position: relative; z-index: 1; width: 100%; max-width: 520px; padding: 0 16px 30px; }
-  .setup-panel {
-    background: var(--bg-card); border-radius: 16px; padding: 22px 20px;
-    margin-bottom: 16px; border: 1px solid rgba(255,255,255,0.05); text-align: center;
+  header p {
+    color: var(--text-secondary); font-size: 0.82rem;
+    margin-top: 2px; font-weight: 400;
   }
-  .setup-panel h2 { font-size: 1.05rem; font-weight: 600; margin-bottom: 10px; }
-  .setup-panel > p { color: var(--text-dim); font-size: 0.84rem; line-height: 1.5; margin-bottom: 14px; }
+
+  /* ===== Container ===== */
+  .container {
+    position: relative; z-index: 1;
+    width: 100%; max-width: 520px; padding: 0 16px 30px;
+  }
+
+  /* ===== Glass Card ===== */
+  .card {
+    background: var(--glass);
+    -webkit-backdrop-filter: blur(var(--blur));
+    backdrop-filter: blur(var(--blur));
+    border-radius: 14px; padding: 20px;
+    margin-bottom: 12px;
+    border: 1px solid var(--glass-border);
+  }
+  .card h2 {
+    font-size: 0.95rem; font-weight: 600; margin-bottom: 10px;
+    color: var(--text-primary);
+  }
+  .card > p {
+    color: var(--text-secondary); font-size: 0.82rem; line-height: 1.5;
+    margin-bottom: 14px;
+  }
+
+  /* ===== Buttons ===== */
   .btn {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 12px 28px; border: none; border-radius: 10px;
-    font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 0.95rem;
-    cursor: pointer; transition: all 0.2s; color: #fff;
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    padding: 11px 22px; border: none; border-radius: 10px;
+    font-family: inherit; font-weight: 600; font-size: 0.88rem;
+    cursor: pointer; transition: all 0.2s ease; color: var(--text-on-fill);
+    position: relative; overflow: hidden;
   }
-  .btn-primary { background: var(--accent); }
-  .btn-primary:hover { background: #d63851; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(233,69,96,0.3); }
-  .btn-secondary { background: var(--bg-tile); font-size: 0.85rem; padding: 10px 20px; }
-  .btn-secondary:hover { background: #1a4a7a; }
+  .btn-primary {
+    background: var(--accent);
+  }
+  .btn-primary:hover { background: var(--accent-hover); }
+  .btn-primary:active { transform: scale(0.97); }
+  .btn-secondary {
+    background: var(--bg-tertiary); color: var(--text-primary);
+    font-size: 0.82rem; padding: 9px 16px;
+  }
+  .btn-secondary:hover { background: rgba(99,99,102,0.5); }
   .btn-sm { padding: 8px 16px; font-size: 0.8rem; border-radius: 8px; }
-  .btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
+  .btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none !important; }
+
+  /* ===== Status Bar ===== */
   .status-bar {
-    background: var(--bg-card); border-radius: 12px; padding: 10px 16px;
-    margin-bottom: 10px; display: flex; justify-content: space-between;
-    align-items: center; border: 1px solid rgba(255,255,255,0.05); font-size: 0.84rem;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 8px 14px; margin-bottom: 10px;
+    background: var(--bg-primary); border-radius: 10px;
+    border: 1px solid var(--glass-border); font-size: 0.8rem;
   }
-  .status-bar .remaining { font-family: 'Space Mono', monospace; color: var(--present); font-weight: 700; font-size: 0.78rem; }
-  .status-bar .guess-num { color: var(--text-dim); }
+  .status-bar .remaining {
+    font-weight: 600; color: var(--present);
+    font-variant-numeric: tabular-nums;
+  }
+  .status-bar .guess-num { color: var(--text-secondary); }
+
+  /* ===== Board ===== */
   .board { display: flex; flex-direction: column; align-items: center; gap: var(--gap); margin-bottom: 10px; }
   .row { display: flex; gap: var(--gap); }
   .tile {
     width: var(--tile-size); height: var(--tile-size);
     display: flex; align-items: center; justify-content: center;
-    font-family: 'Space Mono', monospace; font-size: 1.6rem; font-weight: 700;
+    font-family: -apple-system, 'SF Pro Rounded', 'Inter', sans-serif;
+    font-size: 1.5rem; font-weight: 700;
     text-transform: uppercase; border-radius: 10px;
-    border: 2px solid rgba(255,255,255,0.08); background: var(--bg-tile);
-    transition: all 0.3s; cursor: default; user-select: none;
+    border: 2px solid var(--bg-tertiary); background: var(--bg-secondary);
+    transition: all 0.25s ease; cursor: default; user-select: none;
+    color: var(--text-primary);
   }
-  .tile.empty { background: transparent; border: 2px dashed rgba(255,255,255,0.06); }
-  .tile.active { border-color: rgba(255,255,255,0.25); animation: popIn 0.3s ease; }
+  .tile.empty { background: transparent; border: 2px solid var(--bg-tertiary); border-style: dashed; }
+  .tile.active { border-color: var(--text-tertiary); animation: tileIn 0.25s ease; }
   .tile.clickable { cursor: pointer; }
-  .tile.clickable:hover { transform: scale(1.05); border-color: rgba(255,255,255,0.3); }
+  .tile.clickable:hover { transform: scale(1.06); border-color: rgba(255,255,255,0.25); }
   .tile.correct { background: var(--correct); border-color: var(--correct); color: #fff; }
   .tile.present { background: var(--present); border-color: var(--present); color: #fff; }
   .tile.absent { background: var(--absent); border-color: var(--absent); color: rgba(255,255,255,0.7); }
   .tile.autogreen { position: relative; }
   .tile.autogreen::after {
-    content: ''; position: absolute; top: 3px; right: 3px;
-    width: 8px; height: 8px; border-radius: 50%;
-    background: rgba(255,255,255,0.55); border: 1px solid rgba(0,0,0,0.15);
+    content: ''; position: absolute; top: 4px; right: 4px;
+    width: 7px; height: 7px; border-radius: 50%;
+    background: rgba(255,255,255,0.6);
   }
-  @keyframes popIn { 0%{transform:scale(0.8);opacity:0.5} 50%{transform:scale(1.08)} 100%{transform:scale(1);opacity:1} }
+  @keyframes tileIn { 0%{transform:scale(0.85);opacity:0.5} 50%{transform:scale(1.05)} 100%{transform:scale(1);opacity:1} }
   @keyframes flipIn { 0%{transform:rotateX(90deg)} 100%{transform:rotateX(0deg)} }
-  .tile.flip { animation: flipIn 0.4s ease; }
+  .tile.flip { animation: flipIn 0.35s ease; }
+
+  /* ===== Actions ===== */
   .actions { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
-  .feedback-help { text-align: center; margin-bottom: 6px; font-size: 0.75rem; color: var(--text-dim); line-height: 1.4; }
-  .feedback-help .legend { display: flex; justify-content: center; gap: 12px; margin-top: 3px; }
-  .feedback-help .legend-item { display: flex; align-items: center; gap: 4px; font-size: 0.7rem; }
-  .legend-swatch { width: 13px; height: 13px; border-radius: 3px; display: inline-block; }
-  .override-hint { font-size: 0.68rem; color: var(--text-dim); opacity: 0.7; margin-top: 3px; font-style: italic; }
+
+  /* ===== Feedback Legend ===== */
+  .feedback-help {
+    text-align: center; margin-bottom: 6px;
+    font-size: 0.72rem; color: var(--text-tertiary); line-height: 1.4;
+  }
+  .feedback-help .legend { display: flex; justify-content: center; gap: 14px; margin-top: 4px; }
+  .feedback-help .legend-item { display: flex; align-items: center; gap: 4px; font-size: 0.68rem; color: var(--text-secondary); }
+  .legend-swatch { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+  .override-hint { font-size: 0.65rem; color: var(--text-tertiary); margin-top: 3px; font-style: italic; }
+
+  /* ===== Result Panel ===== */
   .result-panel {
-    background: var(--bg-card); border-radius: 16px; padding: 28px 20px;
-    text-align: center; border: 1px solid rgba(255,255,255,0.05); margin-top: 8px;
+    background: var(--glass);
+    -webkit-backdrop-filter: blur(var(--blur));
+    backdrop-filter: blur(var(--blur));
+    border-radius: 14px; padding: 24px 20px;
+    text-align: center; border: 1px solid var(--glass-border); margin-top: 8px;
   }
-  .result-panel h2 { font-size: 1.3rem; margin-bottom: 6px; }
-  .result-panel .emoji { font-size: 2.8rem; margin-bottom: 10px; }
-  .result-panel p { color: var(--text-dim); font-size: 0.88rem; margin-bottom: 14px; }
+  .result-panel .emoji { font-size: 2.6rem; margin-bottom: 8px; }
+  .result-panel h2 { font-size: 1.2rem; margin-bottom: 4px; font-weight: 700; }
+  .result-panel p { color: var(--text-secondary); font-size: 0.84rem; margin-bottom: 12px; }
+
+  /* Analysis input */
+  .analysis-input {
+    width: 120px; padding: 8px 12px; border-radius: 8px;
+    border: 1px solid var(--separator); background: var(--bg-primary);
+    color: var(--text-primary); font-family: 'SF Mono', 'Menlo', 'Courier New', monospace;
+    font-size: 0.88rem; text-transform: uppercase; text-align: center;
+    outline: none; letter-spacing: 3px;
+    transition: border-color 0.2s;
+  }
+  .analysis-input:focus { border-color: var(--accent); }
+  .analysis-result {
+    background: var(--bg-primary); border-radius: 10px; padding: 12px 14px;
+    font-family: 'SF Mono', 'Menlo', 'Courier New', monospace;
+    font-size: 0.68rem; color: var(--text-secondary);
+    line-height: 1.6; text-align: left; max-height: 200px; overflow-y: auto;
+    border: 1px solid var(--glass-border); white-space: pre-wrap;
+    margin-top: 10px;
+  }
+
+  /* ===== Thinking Log ===== */
   .thinking-log {
-    margin-top: 6px; background: rgba(0,0,0,0.2); border-radius: 10px;
-    padding: 10px 14px; font-family: 'Space Mono', monospace;
-    font-size: 0.68rem; color: var(--text-dim); max-height: 90px;
-    overflow-y: auto; line-height: 1.5; border: 1px solid rgba(255,255,255,0.04);
+    margin-top: 6px; background: var(--bg-primary); border-radius: 10px;
+    padding: 10px 14px;
+    font-family: 'SF Mono', 'Menlo', 'Courier New', monospace;
+    font-size: 0.65rem; color: var(--text-secondary); max-height: 80px;
+    overflow-y: auto; line-height: 1.5; border: 1px solid var(--glass-border);
   }
-  .starter-section { margin-bottom: 12px; }
-  .starter-label { display: block; font-size: 0.82rem; color: var(--text-dim); margin-bottom: 7px; font-weight: 400; }
-  .starter-pills { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+
+  /* ===== Starters & Strategy Pills ===== */
+  .section-label {
+    display: block; font-size: 0.78rem; color: var(--text-secondary);
+    margin-bottom: 8px; font-weight: 500;
+  }
+  .pill-group { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-bottom: 14px; }
   .pill {
-    font-family: 'Space Mono', monospace; font-size: 0.73rem; font-weight: 700;
-    padding: 7px 11px; border-radius: 8px; border: 2px solid rgba(255,255,255,0.1);
-    background: var(--bg); color: var(--text-dim); cursor: pointer;
-    transition: all 0.2s; letter-spacing: 1px;
+    font-family: 'SF Mono', 'Menlo', 'Courier New', monospace;
+    font-size: 0.7rem; font-weight: 600;
+    padding: 6px 11px; border-radius: 8px;
+    border: 1.5px solid var(--bg-tertiary);
+    background: var(--bg-primary); color: var(--text-secondary);
+    cursor: pointer; transition: all 0.2s; letter-spacing: 1px;
   }
-  .pill:hover { border-color: var(--accent); color: var(--text); transform: translateY(-1px); }
-  .pill.selected { background: var(--accent); border-color: var(--accent); color: #fff; box-shadow: 0 3px 12px rgba(233,69,96,0.3); }
-  .strategy-desc { font-size: 0.7rem; color: var(--text-dim); margin-top: 5px; font-style: italic; line-height: 1.3; }
+  .pill:hover { border-color: var(--accent); color: var(--text-primary); }
+  .pill.selected {
+    background: var(--accent); border-color: var(--accent);
+    color: #fff;
+  }
+  .strategy-desc {
+    font-size: 0.68rem; color: var(--text-tertiary); margin-top: 4px;
+    font-style: italic; line-height: 1.3; margin-bottom: 14px;
+  }
+
+  /* ===== Spinner ===== */
   .thinking-spinner {
-    display: inline-block; width: 12px; height: 12px;
-    border: 2px solid rgba(255,255,255,0.2); border-top-color: var(--present);
-    border-radius: 50%; animation: spin 0.6s linear infinite; margin-left: 4px; vertical-align: middle;
+    display: inline-block; width: 11px; height: 11px;
+    border: 2px solid rgba(255,255,255,0.15);
+    border-top-color: var(--present);
+    border-radius: 50%; animation: spin 0.7s linear infinite;
+    margin-left: 4px; vertical-align: middle;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
-  .hidden { display: none !important; }
+
+  /* ===== Version ===== */
   .version-footer {
-    text-align: center; font-family: 'Space Mono', monospace;
-    font-size: 0.62rem; color: rgba(136,136,170,0.4);
-    margin-top: 16px; padding-bottom: 8px; letter-spacing: 1px;
+    text-align: center; font-size: 0.58rem; color: var(--text-tertiary);
+    margin-top: 16px; padding-bottom: 8px; letter-spacing: 0.5px;
+    opacity: 0.7;
   }
+
+  .hidden { display: none !important; }
+
+  /* ===== Responsive ===== */
   @media (max-width: 440px) {
-    :root { --tile-size: 52px; --gap: 6px; }
-    .tile { font-size: 1.3rem; }
-    header h1 { font-size: 1.6rem; }
-    header { padding: 16px 14px 6px; }
+    :root { --tile-size: 50px; --gap: 5px; }
+    .tile { font-size: 1.25rem; }
+    header h1 { font-size: 1.3rem; }
+    header { padding: 14px 14px 4px; }
     .container { padding: 0 10px 16px; }
+    .card { padding: 16px; }
+  }
+
+  /* Safe area for notched devices */
+  @supports (padding: env(safe-area-inset-top)) {
+    header { padding-top: calc(16px + env(safe-area-inset-top)); }
+    .container { padding-bottom: calc(20px + env(safe-area-inset-bottom)); }
   }
 </style>
 </head>
 <body>
 <header>
-  <h1>RE-WORDLE</h1>
+  <div class="header-row">
+    <div class="app-icon">W</div>
+    <h1>Re-Wordle</h1>
+  </div>
   <p>Think of a 5-letter word. I'll try to guess it.</p>
 </header>
 <div class="container">
-  <div class="setup-panel" id="setupPanel">
+  <div class="card" id="setupPanel">
     <h2>🎯 Ready?</h2>
-    <p>Think of any 5-letter word. I have 2,314 Wordle words built in — and I'll search online if your word isn't in my list.</p>
-    <div class="starter-section">
-      <label class="starter-label">My opening word:</label>
-      <div class="starter-pills" id="starterPills">
-        <button class="pill" data-word="stare" onclick="pickStarter(this)">STARE</button>
-        <button class="pill selected" data-word="slate" onclick="pickStarter(this)">SLATE</button>
-        <button class="pill" data-word="raise" onclick="pickStarter(this)">RAISE</button>
-        <button class="pill" data-word="crane" onclick="pickStarter(this)">CRANE</button>
-        <button class="pill" data-word="orate" onclick="pickStarter(this)">ORATE</button>
-        <button class="pill" data-word="oater" onclick="pickStarter(this)">OATER</button>
-        <button class="pill" data-word="adieu" onclick="pickStarter(this)">ADIEU</button>
-        <button class="pill" data-word="radio" onclick="pickStarter(this)">RADIO</button>
-      </div>
+    <p>Think of any 5-letter word. I have 14,855 words built in — and I'll search online if yours isn't in my list.</p>
+    <label class="section-label">Opening word</label>
+    <div class="pill-group" id="starterPills">
+      <button class="pill" data-word="stare" onclick="pickStarter(this)">STARE</button>
+      <button class="pill selected" data-word="slate" onclick="pickStarter(this)">SLATE</button>
+      <button class="pill" data-word="raise" onclick="pickStarter(this)">RAISE</button>
+      <button class="pill" data-word="crane" onclick="pickStarter(this)">CRANE</button>
+      <button class="pill" data-word="orate" onclick="pickStarter(this)">ORATE</button>
+      <button class="pill" data-word="oater" onclick="pickStarter(this)">OATER</button>
+      <button class="pill" data-word="adieu" onclick="pickStarter(this)">ADIEU</button>
+      <button class="pill" data-word="radio" onclick="pickStarter(this)">RADIO</button>
     </div>
-    <div class="starter-section">
-      <label class="starter-label">Strategy:</label>
-      <div class="starter-pills" id="strategyPills">
-        <button class="pill strategy-pill" data-strategy="classic" onclick="pickStrategy(this)">Classic</button>
-        <button class="pill strategy-pill" data-strategy="entropy" onclick="pickStrategy(this)">Entropy</button>
-        <button class="pill strategy-pill selected" data-strategy="optimized" onclick="pickStrategy(this)">Optimized</button>
-      </div>
-      <p class="strategy-desc" id="strategyDesc">Guess 2: avoids confirmed greens to discover new letters. Guess 3+: frequency-weighted entropy — prefers common words over obscure ones (fetches word frequency data from Datamuse API).</p>
+    <label class="section-label">Strategy</label>
+    <div class="pill-group" id="strategyPills">
+      <button class="pill strategy-pill" data-strategy="classic" onclick="pickStrategy(this)">Classic</button>
+      <button class="pill strategy-pill" data-strategy="entropy" onclick="pickStrategy(this)">Entropy</button>
+      <button class="pill strategy-pill selected" data-strategy="optimized" onclick="pickStrategy(this)">Optimized</button>
     </div>
-    <button class="btn btn-primary" id="startBtn" onclick="startGame()">I've thought of a word — Start!</button>
+    <p class="strategy-desc" id="strategyDesc">Guess 2: avoids confirmed greens to discover new letters. Guess 3+: frequency-weighted entropy — prefers common words over obscure ones (fetches word frequency data from Datamuse API).</p>
+    <button class="btn btn-primary" id="startBtn" onclick="startGame()" style="width:100%;">
+      I've thought of a word — Start!
+    </button>
   </div>
 
   <div class="status-bar hidden" id="statusBar">
@@ -186,43 +327,40 @@
   </div>
   <div class="board hidden" id="board"></div>
   <div class="actions hidden" id="actions">
-    <button class="btn btn-primary btn-sm" id="confirmBtn" onclick="confirmFeedback()">Confirm</button>
-    <button class="btn btn-secondary btn-sm" onclick="resetGame()">New Game</button>
+    <button class="btn btn-primary btn-sm" id="confirmBtn" onclick="confirmFeedback()">
+      ✓ Confirm
+    </button>
+    <button class="btn btn-secondary btn-sm" onclick="resetGame()">
+      ↺ New Game
+    </button>
   </div>
   <div class="feedback-help hidden" id="feedbackHelp">
-    Click tiles to cycle color, then confirm.
+    Tap tiles to cycle color, then confirm.
     <div class="legend">
       <div class="legend-item"><span class="legend-swatch" style="background:var(--absent)"></span> Gray</div>
       <div class="legend-item"><span class="legend-swatch" style="background:var(--present)"></span> Yellow</div>
       <div class="legend-item"><span class="legend-swatch" style="background:var(--correct)"></span> Green</div>
     </div>
-    <div class="override-hint">● dot = auto-green — click it to override if wrong</div>
+    <div class="override-hint">● = auto-detected green — tap to override</div>
   </div>
   <div class="result-panel hidden" id="resultPanel">
     <div class="emoji" id="resultEmoji"></div>
     <h2 id="resultTitle"></h2>
     <p id="resultMsg"></p>
     <div class="analysis-section hidden" id="analysisSection">
-      <p style="font-size:0.82rem; color:var(--text-dim); margin-bottom:8px;">What was your word?</p>
-      <div style="display:flex; gap:8px; justify-content:center; align-items:center; margin-bottom:10px;">
-        <input type="text" id="revealWord" maxlength="5" placeholder="Enter word"
-          style="width:120px; padding:8px 12px; border-radius:8px; border:1px solid rgba(255,255,255,0.15);
-          background:var(--bg); color:var(--text); font-family:'Space Mono',monospace;
-          font-size:0.9rem; text-transform:uppercase; text-align:center; outline:none; letter-spacing:2px;">
+      <p style="font-size:0.8rem; color:var(--text-secondary); margin-bottom:8px;">What was your word?</p>
+      <div style="display:flex; gap:8px; justify-content:center; align-items:center; margin-bottom:6px;">
+        <input type="text" id="revealWord" maxlength="5" placeholder="WORD" class="analysis-input">
         <button class="btn btn-primary btn-sm" onclick="analyzeWord()">Analyze</button>
       </div>
-      <div class="analysis-result hidden" id="analysisResult"
-        style="background:rgba(0,0,0,0.2); border-radius:10px; padding:12px 14px;
-        font-family:'Space Mono',monospace; font-size:0.7rem; color:var(--text-dim);
-        line-height:1.6; text-align:left; max-height:200px; overflow-y:auto;
-        border:1px solid rgba(255,255,255,0.04); white-space:pre-wrap;"></div>
+      <div class="analysis-result hidden" id="analysisResult"></div>
     </div>
     <div style="margin-top:12px;">
-      <button class="btn btn-primary" onclick="resetGame()">Play Again</button>
+      <button class="btn btn-primary" onclick="resetGame()">↺ Play Again</button>
     </div>
   </div>
   <div class="thinking-log hidden" id="thinkingLog"></div>
-  <div class="version-footer">v1.4.0</div>
+  <div class="version-footer">v1.5.0</div>
 </div>
 <script>
 // ===== EMBEDDED DATA =====

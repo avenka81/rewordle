@@ -309,6 +309,12 @@
       <button class="pill" data-word="adieu" onclick="pickStarter(this)">ADIEU</button>
       <button class="pill" data-word="radio" onclick="pickStarter(this)">RADIO</button>
     </div>
+    <div style="display:flex; gap:8px; justify-content:center; align-items:center; margin-bottom:14px;">
+      <span style="font-size:0.72rem; color:var(--text-secondary);">or type your own:</span>
+      <input type="text" id="customStarter" maxlength="5" placeholder="WORD" class="analysis-input"
+        style="width:90px; font-size:0.8rem; padding:6px 10px;"
+        oninput="onCustomStarter(this)">
+    </div>
     <label class="section-label">Strategy</label>
     <div class="pill-group" id="strategyPills">
       <button class="pill strategy-pill" data-strategy="classic" onclick="pickStrategy(this)">Classic</button>
@@ -395,7 +401,25 @@ function pickStarter(el) {
   document.querySelectorAll('#starterPills .pill').forEach(p => p.classList.remove('selected'));
   el.classList.add('selected');
   starterWord = el.dataset.word;
+  // Clear custom input when a pill is selected
+  const ci = $('customStarter');
+  if (ci) ci.value = '';
 }
+
+function onCustomStarter(input) {
+  const val = input.value.toLowerCase().replace(/[^a-z]/g, '');
+  input.value = val.toUpperCase();
+  if (val.length === 5) {
+    // Deselect all pills, use custom word
+    document.querySelectorAll('#starterPills .pill').forEach(p => p.classList.remove('selected'));
+    starterWord = val;
+  } else if (val.length === 0) {
+    // Revert to SLATE default if cleared
+    const slate = document.querySelector('#starterPills .pill[data-word="slate"]');
+    if (slate) { slate.classList.add('selected'); starterWord = 'slate'; }
+  }
+}
+
 function pickStrategy(el) {
   document.querySelectorAll('#strategyPills .pill').forEach(p => p.classList.remove('selected'));
   el.classList.add('selected');
@@ -946,7 +970,7 @@ async function confirmFeedback() {
   guessHistory.push({ word: guess, feedback: fb });
 
   candidates = candidates.filter(word => matchesFeedback(word, guess, fb));
-  log(`Narrowed to ${candidates.length} candidates.`);
+  log(`Narrowed to ${candidates.length} candidate${candidates.length !== 1 ? 's' : ''}.${candidates.length > 0 && candidates.length <= 5 ? ' ' + candidates.map(w => w.toUpperCase()).join(', ') : ''}`);
 
   // If no candidates in answer list, try extended pool, then online dictionary
   if (candidates.length === 0) {
@@ -1123,6 +1147,8 @@ function resetGame() {
   $('thinkingLog').textContent = '';
   $('startBtn').disabled = false;
   $('startBtn').textContent = "I've thought of a word — Start!";
+  const ci = $('customStarter');
+  if (ci) ci.value = '';
   gameOver = false; guessNum = 0;
   guessHistory = []; confirmedGreens = {};
 }
